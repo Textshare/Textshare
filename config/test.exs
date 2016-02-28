@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :textshare, Textshare.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "textshare",
+  password: "",
   database: "textshare_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
