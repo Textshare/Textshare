@@ -1,7 +1,7 @@
-defmodule Textshare.PageController do
+defmodule Textshare.IndexController do
   use Textshare.Web, :controller
 
   def index(conn, _params) do
-    render conn, "index.html"
+    render conn, "app.html"
   end
 end

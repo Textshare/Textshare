@@ -16,7 +16,7 @@ defmodule Textshare.Router do
   scope "/", Textshare do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", IndexController, :index
   end
 
   # Other scopes may use custom stacks.
