@@ -14,7 +14,7 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       "node_modules",
-      __dirname + "/web/frontend"
+      __dirname + "/web/frontend/react"
     ],
     alias: {
       phoenix: __dirname + "/deps/phoenix/web/static/js/phoenix.js",
