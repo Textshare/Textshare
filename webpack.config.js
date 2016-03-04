@@ -3,7 +3,7 @@ var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    "app": ["./web/frontend/css/app.scss", "./web/frontend/js/app.js"],
+    "app": ["./web/frontend/react/index.js"],
   },
 
   output: {
