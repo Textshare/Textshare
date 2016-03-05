@@ -14,31 +14,17 @@ class Home extends Component {
   }
 
   addItem = () => {
-    console.log("add")
+    this.props.addItem({ id: new Date().getTime(), text: "test" })
   }
 
   render() {
     return (
       <div>
-        <div className="home-test-class">
-          {
-            this.collection.map((n) => {
-              return (
-                <div key={n} onClick={this.clickCallback}>
-                  <span>{this.collection}</span>
-                  <span>{n}</span>
-                  <Test></Test>
-                </div>
-              )
-            })
-          }
-        </div>
-        <br></br>
-        <div>
+        <div className="">
           {
             this.props.test.map((item) => {
               return (
-                <TestTwo key={item.id} item={item}></TestTwo>
+                <TestTwo key={item.id} item={item} removeItem={this.props.removeItem}></TestTwo>
               )
             })
           }

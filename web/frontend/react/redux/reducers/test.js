@@ -1,5 +1,5 @@
 const initialState = [
-  { id: 1, text: "x" }
+  { id: new Date().getTime(), text: "test" }
 ]
 
 export default function testReducer(state = initialState, action) {
@@ -7,7 +7,7 @@ export default function testReducer(state = initialState, action) {
     case "ADD_TO_ARRAY":
       return state.concat(action.item)
     case "REMOVE_FROM_ARRAY":
-      return state.filter((item) => item == action.item)
+      return state.filter((item) => item !== action.item)
     default:
       return state
   }
