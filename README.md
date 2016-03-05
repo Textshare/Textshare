@@ -9,6 +9,7 @@
 
 ## Setup:
 
+  * Install Hex `mix local.hex`
   * Install dependencies with `mix deps.get`
   * Create a PostgreSQL role according to the settings in `./config/dev.exs`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
