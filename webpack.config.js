@@ -50,6 +50,6 @@ module.exports = {
 
   plugins: [
     new ExtractTextPlugin("css/app.css"),
-    new CopyWebpackPlugin([{ from: "./web/frontend/assets" }])
+    new CopyWebpackPlugin([{ from: "./web/frontend/assets", to: "assets" }])
   ]
 }

@@ -16,19 +16,19 @@ body {
 // }
 @font-face {
   font-family: 'AtlasGrotesk';
-  src: url('/fonts/AtlasGrotesk-Light-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Light-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Light-Web.ttf') format('truetype');
+  src: url('/assets/fonts/AtlasGrotesk-Light-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Light-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Light-Web.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'AtlasGrotesk';
-  src: url('/fonts/AtlasGrotesk-LightItalic-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-LightItalic-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-LightItalic-Web.ttf') format('truetype');
+  src: url('/assets/fonts/AtlasGrotesk-LightItalic-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-LightItalic-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-LightItalic-Web.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
 }
 @font-face {
   font-family: 'AtlasGrotesk';
-  src: url('/fonts/AtlasGrotesk-Regular-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Regular-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Regular-Web.ttf') format('truetype');
+  src: url('/assets/fonts/AtlasGrotesk-Regular-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Regular-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Regular-Web.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
@@ -40,7 +40,7 @@ body {
 // }
 @font-face {
   font-family: 'AtlasGrotesk';
-  src: url('/fonts/AtlasGrotesk-Medium-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Medium-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Medium-Web.ttf') format('truetype');
+  src: url('/assets/fonts/AtlasGrotesk-Medium-Web.woff2') format('woff2');//,url('/static/fonts/AtlasGrotesk-Medium-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Medium-Web.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
 }
