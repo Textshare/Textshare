@@ -2,11 +2,12 @@ import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
 import Row from "components/Row"
+import "./Editor.scss"
 
 class Editor extends Component {
   render() {
     return (
-      <div>
+      <div className="editor">
         {this.props.rows.map((row) =>
           <Row key={row.id} row={row}></Row>
         )}

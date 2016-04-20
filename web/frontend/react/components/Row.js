@@ -5,7 +5,7 @@ import "./Row.scss"
 class Row extends Component {
   render() {
     return (
-      <div className="row">
+      <div className="editor-row">
         {this.props.row.text}
       </div>
     )
