@@ -5,11 +5,15 @@ import Row from "components/Row"
 import "./Editor.scss"
 
 class Editor extends Component {
+  rowChangeCallback = (event, rowId, payload) => {
+    console.log(event.type, rowId, payload)
+  }
+
   render() {
     return (
       <div className="editor">
         {this.props.rows.map((row) =>
-          <Row key={row.id} row={row}></Row>
+          <Row key={row.id} row={row} onChange={this.rowChangeCallback}></Row>
         )}
       </div>
     )
@@ -17,9 +21,7 @@ class Editor extends Component {
 }
 
 function mapStateToProps(state) {
-  return { rows: state.editor.rowOrder.map((rowId) => {
-    return Object.assign({}, state.editor.rows[rowId], { id: rowId })
-  })}
+  return { rows: state.editor.rowOrder.map((rowId) => state.editor.rows[rowId]) }
 }
 
 export default connect(mapStateToProps)(Editor)
