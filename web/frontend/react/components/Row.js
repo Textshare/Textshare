@@ -19,6 +19,16 @@ class Row extends Component {
       ></div>
     )
   }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.row.text !== this.div.innerHTML
+  }
+
+  componentDidUpdate() {
+    if (this.props.row.text !== this.div.innerHTML) {
+      this.div.innerHTML = this.props.row.text;
+    }
+  }
 }
 
 export default Row

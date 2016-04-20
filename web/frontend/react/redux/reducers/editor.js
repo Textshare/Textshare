@@ -10,6 +10,10 @@ const initialState = {
 
 export default function editorReducer(state = initialState, action) {
   switch (action.type) {
+    case "SET_ROW_TEXT":
+      const newRow = Object.assign({}, state.rows[action.rowId], { text: action.text })
+      const newRows = Object.assign({}, state.rows, { [action.rowId]: newRow })
+      return Object.assign({}, state, { rows: newRows })
     default:
       return state
   }
