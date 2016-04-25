@@ -3,7 +3,7 @@ import { Component } from "react"
 import "./Row.scss"
 
 class Row extends Component {
-  onInput = (event) => { this.props.onInput(event, this.props.row.id, this.div.innerHTML) }
+  onInput = (event) => { this.props.onInput(event, this.props.row.id, this.div.innerText) }
   onKeyDown = (event) => { this.props.onKeyDown(event, this.props.row.id) }
   onKeyUp = (event) => { this.props.onKeyUp(event, this.props.row.id) }
   onClick = (event) => { this.props.onClick(event, this.props.row.id) }
@@ -36,18 +36,18 @@ class Row extends Component {
   }
 
   componentDidMount() {
-    this.div.innerHTML = this.props.row.text
+    this.div.innerText = this.props.row.text
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.row.text !== this.div.innerHTML ||
+    return nextProps.row.text !== this.div.innerText ||
       nextProps.focusedRowId === nextProps.row.id &&
       nextProps.cursorPosition !== window.getSelection().anchorOffset
   }
 
   componentDidUpdate() {
-    if (this.props.row.text !== this.div.innerHTML) {
-      this.div.innerHTML = this.props.row.text
+    if (this.props.row.text !== this.div.innerText) {
+      this.div.innerText = this.props.row.text
     }
 
     if (this.props.focusedRowId === this.props.row.id &&
