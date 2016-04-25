@@ -40,9 +40,14 @@ class Row extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    // text has changed
     return nextProps.row.text !== this.div.innerText ||
-      nextProps.focusedRowId === nextProps.row.id &&
-      nextProps.cursorPosition !== window.getSelection().anchorOffset
+    // row is focused and cursor position has changed
+      nextProps.focusedRowId === this.props.row.id &&
+      nextProps.cursorPosition !== window.getSelection().anchorOffset ||
+    // row used to not be focused, but became focused
+      nextProps.focusedRowId === this.props.row.id &&
+      this.props.focusedRowId !== this.props.row.id
   }
 
   componentDidUpdate() {
@@ -51,7 +56,8 @@ class Row extends Component {
     }
 
     if (this.props.focusedRowId === this.props.row.id &&
-    this.props.cursorPosition !== window.getSelection().anchorOffset) {
+    (this.props.cursorPosition !== window.getSelection().anchorOffset ||
+    document.activeElement !== this.div)) {
       this.setCursorPosition(this.props.cursorPosition)
     }
   }
