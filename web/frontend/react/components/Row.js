@@ -8,6 +8,7 @@ class Row extends Component {
   onKeyUp = (event) => { this.props.onKeyUp(event, this.props.row.id) }
   onClick = (event) => { this.props.onClick(event, this.props.row.id) }
   onBlur = (event) => { this.props.onBlur(event) }
+  onPaste = (event) => { this.props.onPaste(event, this.props.row.id) }
 
   setCursorPosition = (position) => {
     let selection = window.getSelection()
@@ -31,6 +32,7 @@ class Row extends Component {
         onKeyUp={this.onKeyUp}
         onClick={this.onClick}
         onBlur={this.onBlur}
+        onPaste={this.onPaste}
       ></div>
     )
   }

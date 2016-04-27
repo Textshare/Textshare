@@ -3,7 +3,9 @@ import { Component } from "react"
 import { connect } from "react-redux"
 import Row from "components/Row"
 import EditorActions from "redux/actions/editor"
-import { keyDownHandler, keyUpHandler, onClickHandler } from "./editor_input_handler"
+import {
+  keyDownHandler, keyUpHandler, onClickHandler, onPasteHandler
+} from "./editor_input_handler"
 import "./Editor.scss"
 
 class Editor extends Component {
@@ -12,6 +14,7 @@ class Editor extends Component {
   onKeyUp = (event, rowId) => { keyUpHandler(event, rowId, this.props) }
   onClick = (event, rowId) => { onClickHandler(event, rowId, this.props) }
   onBlur = (_event) => { this.props.setFocusedRow(null) }
+  onPaste = (event, rowId) => { onPasteHandler(event, rowId, this.props) }
 
   render() {
     return (
@@ -27,6 +30,7 @@ class Editor extends Component {
             onKeyUp={this.onKeyUp}
             onClick={this.onClick}
             onBlur={this.onBlur}
+            onPaste={this.onPaste}
           ></Row>
         )}
       </div>

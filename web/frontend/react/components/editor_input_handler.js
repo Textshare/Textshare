@@ -70,4 +70,14 @@ function onClickHandler(event, rowId, editor) {
   editor.setFocusedRow(rowId)
 }
 
-export { keyDownHandler, keyUpHandler, onClickHandler }
+function onPasteHandler(event, rowId, editor) {
+  if (event.clipboardData.types.includes("text/html")) {
+    event.preventDefault()
+    let unsanitizedHtml = event.clipboardData.getData("text/html")
+    let temporaryElement = document.createElement("div")
+    temporaryElement.innerHTML = unsanitizedHtml
+    editor.pasteTextToRow(rowId, temporaryElement.innerText)
+  }
+}
+
+export { keyDownHandler, keyUpHandler, onClickHandler, onPasteHandler }
