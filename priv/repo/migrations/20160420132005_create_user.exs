@@ -3,9 +3,9 @@ defmodule Textshare.Repo.Migrations.CreateUser do
 
   def change do
     create table(:users) do
-      add :name, :string
-      add :email, :string
-      add :password, :string
+      add :name, :string, null: false
+      add :email, :string, null: false
+      add :encrypted_password, :string, null: false
 
       timestamps
     end
