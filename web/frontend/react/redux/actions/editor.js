@@ -4,6 +4,9 @@ const EditorActions = {
     dispatch({ type: "SET_ROW_TEXT", rowId: rowId, text: text })
     dispatch({ type: "SET_CURSOR_POSITION", position: newPosition })
   },
+  addRow: (uuid, afterRowId) => {
+    return { type: "ADD_ROW", uuid: uuid, afterRowId: afterRowId }
+  },
   removeRow: (rowId) => {
     return { type: "REMOVE_ROW", rowId: rowId }
   },

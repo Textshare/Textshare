@@ -1,3 +1,5 @@
+import UUID from "uuid-js"
+
 function cursorShouldJumpToNextLine(currentRowIndex, editor) {
   return window.getSelection().anchorOffset === editor.rows[currentRowIndex].text.length &&
     currentRowIndex + 1 < editor.rows.length
@@ -40,6 +42,10 @@ function keyUpHandler(event, rowId, editor) {
   if ([37, 39].includes(event.keyCode)) {
     editor.setCursorPosition(window.getSelection().anchorOffset)
   }
+  // enter
+  if (event.keyCode === 13) {
+    editor.setFocusedRow(event.newRowId)
+  }
 }
 
 function keyDownHandler(event, rowId, editor) {
@@ -47,6 +53,7 @@ function keyDownHandler(event, rowId, editor) {
   if (event.keyCode === 39) {
     let currentRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
     if (cursorShouldJumpToNextLine(currentRowIndex, editor)) {
+      event.preventDefault()
       editor.setCursorPosition(0)
       editor.setFocusedRow(editor.rows[currentRowIndex + 1].id)
     }
@@ -55,6 +62,7 @@ function keyDownHandler(event, rowId, editor) {
   if (event.keyCode === 37) {
     let currentRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
     if (cursorShouldJumpToPreviousLine(currentRowIndex, editor)) {
+      event.preventDefault()
       editor.setCursorPosition(editor.rows[currentRowIndex - 1].text.length)
       editor.setFocusedRow(editor.rows[currentRowIndex - 1].id)
     }
@@ -63,7 +71,7 @@ function keyDownHandler(event, rowId, editor) {
   if ([38, 40].includes(event.keyCode)) {
     event.previousCursorPosition = window.getSelection().anchorOffset
   }
-  // backspace 8
+  // backspace
   if (event.keyCode === 8) {
     if (editor.rows.length > 0 && editor.rows[0].id !== editor.focusedRowId &&
     window.getSelection().anchorOffset === 0) {
@@ -76,7 +84,7 @@ function keyDownHandler(event, rowId, editor) {
       editor.removeRow(rowId)
     }
   }
-  // delete 46
+  // delete
   if (event.keyCode === 46) {
     let focusedRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
     if (editor.rows.length > 0 && focusedRowIndex !== editor.rows.length - 1 &&
@@ -87,11 +95,17 @@ function keyDownHandler(event, rowId, editor) {
       editor.removeRow(nextRow.id)
     }
   }
-}
-
-function onClickHandler(event, rowId, editor) {
-  editor.setCursorPosition(window.getSelection().anchorOffset)
-  editor.setFocusedRow(rowId)
+  // enter
+  if (event.keyCode === 13) {
+    event.preventDefault()
+    let focusedRow = editor.rows.find((row) => { return row.id === editor.focusedRowId })
+    let uuid = UUID.create().hex
+    editor.addRow(uuid, editor.focusedRowId)
+    editor.setRowText(uuid, focusedRow.text.slice(editor.cursorPosition, focusedRow.text.length))
+    editor.setRowText(editor.focusedRowId, focusedRow.text.slice(0, editor.cursorPosition))
+    editor.setCursorPosition(0)
+    event.newRowId = uuid
+  }
 }
 
 function onPasteHandler(event, rowId, editor) {
@@ -104,4 +118,4 @@ function onPasteHandler(event, rowId, editor) {
   }
 }
 
-export { keyDownHandler, keyUpHandler, onClickHandler, onPasteHandler }
+export { keyDownHandler, keyUpHandler, onPasteHandler }

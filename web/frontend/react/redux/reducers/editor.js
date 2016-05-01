@@ -1,20 +1,25 @@
 import { combineReducers } from "redux"
 
 const initialState = {
-  rowOrder: [1, 2, 3, 4],
-  rows: {
-    1: { id: 1, text: "" },
-    2: { id: 2, text: "" },
-    4: { id: 4, text: "" },
-    3: { id: 3, text: "" }
-  },
+  rowOrder: [],
+  rows: {},
   focusedRowId: null,
   cursorPosition: 0
 }
 
+function initialRowState(uuid) { return { id: uuid, text: "" } }
+
 export default combineReducers({
   rowOrder: function(state = initialState.rowOrder, action) {
     switch (action.type) {
+      case "ADD_ROW":
+        if (action.afterRowId) {
+          return state.reduce((acc, rowId) => {
+            return acc.concat(action.afterRowId === rowId ? [rowId, action.uuid] : [rowId])
+          }, [])
+        } else {
+          return [action.uuid].concat(state)
+        }
       case "REMOVE_ROW":
         return state.filter((rowId) => rowId !== action.rowId)
       default:
@@ -26,6 +31,8 @@ export default combineReducers({
       case "SET_ROW_TEXT":
         const newRow = Object.assign({}, state[action.rowId], { text: action.text })
         return Object.assign({}, state, { [action.rowId]: newRow })
+      case "ADD_ROW":
+        return Object.assign({}, state, { [action.uuid]: initialRowState(action.uuid) })
       case "REMOVE_ROW":
         return Object.keys(state).reduce((acc, rowId) => {
           return rowId === action.rowId ? acc : Object.assign({}, acc, { [rowId]: state[rowId] })

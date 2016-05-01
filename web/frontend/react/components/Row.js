@@ -6,8 +6,9 @@ class Row extends Component {
   onInput = (event) => { this.props.onInput(event, this.props.row.id, this.div.innerText) }
   onKeyDown = (event) => { this.props.onKeyDown(event, this.props.row.id) }
   onKeyUp = (event) => { this.props.onKeyUp(event, this.props.row.id) }
-  onClick = (event) => { this.props.onClick(event, this.props.row.id) }
+  onClick = (event) => { this.props.onClick(event) }
   onBlur = (event) => { this.props.onBlur(event) }
+  onFocus = (event) => { this.props.onFocus(event, this.props.row.id) }
   onPaste = (event) => { this.props.onPaste(event, this.props.row.id) }
 
   setCursorPosition = (position) => {
@@ -15,8 +16,9 @@ class Row extends Component {
     let range = document.createRange()
     // TODO: iterate over text nodes instead of taking the first node. It works fine now as long as
     //       the row has only one plain text element, but breaks otherwise.
-    range.setStart(this.div.childNodes[0], position)
-    range.setEnd(this.div.childNodes[0], position)
+    let targetNode = this.div.childNodes.length > 0 ? this.div.childNodes[0] : this.div
+    range.setStart(targetNode, position)
+    range.setEnd(targetNode, position)
     selection.removeAllRanges()
     selection.addRange(range)
   }
@@ -32,6 +34,7 @@ class Row extends Component {
         onKeyUp={this.onKeyUp}
         onClick={this.onClick}
         onBlur={this.onBlur}
+        onFocus={this.onFocus}
         onPaste={this.onPaste}
       ></div>
     )

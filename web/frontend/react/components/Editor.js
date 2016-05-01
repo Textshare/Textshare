@@ -3,17 +3,17 @@ import { Component } from "react"
 import { connect } from "react-redux"
 import Row from "components/Row"
 import EditorActions from "redux/actions/editor"
-import {
-  keyDownHandler, keyUpHandler, onClickHandler, onPasteHandler
-} from "./editor_input_handler"
+import UUID from "uuid-js"
+import { keyDownHandler, keyUpHandler, onPasteHandler } from "./editor_input_handler"
 import "./Editor.scss"
 
 class Editor extends Component {
   onInput = (_event, rowId, newText) => { this.props.setRowText(rowId, newText) }
   onKeyDown = (event, rowId) => { keyDownHandler(event, rowId, this.props) }
   onKeyUp = (event, rowId) => { keyUpHandler(event, rowId, this.props) }
-  onClick = (event, rowId) => { onClickHandler(event, rowId, this.props) }
+  onClick = (_event) => { this.props.setCursorPosition(window.getSelection().anchorOffset) }
   onBlur = (_event) => { this.props.setFocusedRow(null) }
+  onFocus = (_event, rowId) => { this.props.setFocusedRow(rowId) }
   onPaste = (event, rowId) => { onPasteHandler(event, rowId, this.props) }
 
   render() {
@@ -30,11 +30,20 @@ class Editor extends Component {
             onKeyUp={this.onKeyUp}
             onClick={this.onClick}
             onBlur={this.onBlur}
+            onFocus={this.onFocus}
             onPaste={this.onPaste}
           ></Row>
         )}
       </div>
     )
+  }
+
+  componentDidMount() {
+    if (this.props.rows.length === 0) {
+      let uuid = UUID.create().hex
+      this.props.addRow(uuid)
+      this.props.setFocusedRow(uuid)
+    }
   }
 }
 
