@@ -63,6 +63,30 @@ function keyDownHandler(event, rowId, editor) {
   if ([38, 40].includes(event.keyCode)) {
     event.previousCursorPosition = window.getSelection().anchorOffset
   }
+  // backspace 8
+  if (event.keyCode === 8) {
+    if (editor.rows.length > 0 && editor.rows[0].id !== editor.focusedRowId &&
+    window.getSelection().anchorOffset === 0) {
+      event.preventDefault()
+      let focusedRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
+      let previousRow = editor.rows[focusedRowIndex - 1]
+      editor.setRowText(previousRow.id, previousRow.text + editor.rows[focusedRowIndex].text)
+      editor.setFocusedRow(previousRow.id)
+      editor.setCursorPosition(previousRow.text.length)
+      editor.removeRow(rowId)
+    }
+  }
+  // delete 46
+  if (event.keyCode === 46) {
+    let focusedRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
+    if (editor.rows.length > 0 && focusedRowIndex !== editor.rows.length - 1 &&
+    window.getSelection().anchorOffset === editor.rows[focusedRowIndex].text.length) {
+      event.preventDefault()
+      let nextRow = editor.rows[focusedRowIndex + 1]
+      editor.setRowText(rowId, editor.rows[focusedRowIndex].text + nextRow.text)
+      editor.removeRow(nextRow.id)
+    }
+  }
 }
 
 function onClickHandler(event, rowId, editor) {

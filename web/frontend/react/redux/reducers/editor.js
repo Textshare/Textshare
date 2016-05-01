@@ -15,8 +15,8 @@ const initialState = {
 export default combineReducers({
   rowOrder: function(state = initialState.rowOrder, action) {
     switch (action.type) {
-      case "TO_DO":
-        return state
+      case "REMOVE_ROW":
+        return state.filter((rowId) => rowId !== action.rowId)
       default:
         return state
     }
@@ -26,6 +26,10 @@ export default combineReducers({
       case "SET_ROW_TEXT":
         const newRow = Object.assign({}, state[action.rowId], { text: action.text })
         return Object.assign({}, state, { [action.rowId]: newRow })
+      case "REMOVE_ROW":
+        return Object.keys(state).reduce((acc, rowId) => {
+          return rowId === action.rowId ? acc : Object.assign({}, acc, { [rowId]: state[rowId] })
+        }, {})
       default:
         return state
     }

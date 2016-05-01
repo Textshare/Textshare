@@ -4,6 +4,9 @@ const EditorActions = {
     dispatch({ type: "SET_ROW_TEXT", rowId: rowId, text: text })
     dispatch({ type: "SET_CURSOR_POSITION", position: newPosition })
   },
+  removeRow: (rowId) => {
+    return { type: "REMOVE_ROW", rowId: rowId }
+  },
   pasteTextToRow: (rowId, pastedText) => (dispatch, getState) => {
     let editor = getState().editor
     let currentText = editor.rows[rowId].text
