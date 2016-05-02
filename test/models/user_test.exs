@@ -3,7 +3,7 @@ defmodule Textshare.UserTest do
 
   alias Textshare.User
 
-  @valid_attrs %{email: "some content", name: "some content", password: "some content"}
+  @valid_attrs %{email: "example@email.com", name: "some content", password: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
