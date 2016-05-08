@@ -1,4 +1,4 @@
-import { push } from "react-router-redux";
+import { browserHistory } from "react-router";
 import { httpPost } from "../../utils";
 
 const Actions = {};
@@ -19,7 +19,7 @@ Actions.signUp = (data) => {
         currentUser: data.user,
       });
 
-      dispatch(push("/"));
+      browserHistory.push("/");
     })
     .catch((error) => {
       error.response.json()

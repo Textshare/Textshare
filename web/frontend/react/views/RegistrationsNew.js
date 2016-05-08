@@ -1,5 +1,6 @@
 import React, {PropTypes} from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router";
 
 import { renderErrorsFor } from "../utils";
 
@@ -48,6 +49,7 @@ class RegistrationsNew extends React.Component {
               {renderErrorsFor(errors, "password_confirmation")}
             </div>
             <button type="submit">Sign up</button>
+            <Link to="/">Home</Link>
           </form>
         </main>
       </div>
