@@ -8,6 +8,10 @@ import { keyDownHandler, keyUpHandler, onPasteHandler } from "./editor_input_han
 import "./Editor.scss"
 
 class Editor extends Component {
+  _onTitleChange = (event) => {
+    this.props.setTitle(this.props.documentId, event.target.value)
+  }
+
   onInput = (_event, rowId, newText) => {
     this.props.setRowText(this.props.documentId, rowId, newText)
   }
@@ -21,6 +25,12 @@ class Editor extends Component {
   render() {
     return (
       <div className="editor">
+        <input
+          className="editor-title-input"
+          value={this.props.editedDocument.title}
+          type="text"
+          onChange={this._onTitleChange}
+        ></input>
         {this.props.rows.map((row) =>
           <Row
             key={row.id}
@@ -52,6 +62,7 @@ class Editor extends Component {
 function mapStateToProps(state, props) {
   let content = state.documents[props.documentId].content
   return {
+    editedDocument: state.documents[props.documentId],
     rows: content.rowOrder.map((rowId) => content.rows[rowId]),
     focusedRowId: state.editor.focusedRowId,
     cursorPosition: state.editor.cursorPosition

@@ -10,6 +10,11 @@ function initialRowState(uuid) { return { id: uuid, text: "" } }
 
 export default function documentsReducer(state = initialState, action) {
   switch (action.type) {
+    case "SET_TITLE": {
+      const newDocument = Object.assign({}, state[action.documentId], { title: action.title })
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
     case "ADD_ROW": {
       const content = state[action.documentId].content
       const newDocumentRowOrder = (() => { if (action.afterRowId) {

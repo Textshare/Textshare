@@ -1,3 +1,7 @@
+export function setTitle(documentId, title) {
+  return { type: "SET_TITLE", documentId: documentId, title: title }
+}
+
 export function setRowText(documentId, rowId, text) { return (dispatch) => {
   let newPosition = window.getSelection().anchorOffset
   dispatch({ type: "SET_ROW_TEXT", documentId: documentId, rowId: rowId, text: text })
