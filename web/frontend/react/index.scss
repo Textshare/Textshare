@@ -7,6 +7,11 @@ body {
   color: #47525d;
 }
 
+a, a:hover, a:visited {
+  color: inherit;
+  text-decoration: inherit;
+}
+
 // @font-face {
 //   font-family: 'AtlasGrotesk';
 //   src: url('/static/fonts/AtlasGrotesk-Thin-Web.woff2') format('woff2'),url('/static/fonts/AtlasGrotesk-Thin-Web.woff') format('woff'),url('/static/fonts/AtlasGrotesk-Thin-Web.ttf') format('truetype');

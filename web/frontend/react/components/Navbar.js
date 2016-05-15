@@ -1,5 +1,6 @@
 import React from "react"
 import { Component } from "react"
+import { Link } from "react-router"
 import "./Navbar.scss"
 
 class Editor extends Component {
@@ -7,7 +8,9 @@ class Editor extends Component {
     return (
       <nav className="navbar navbar-inverse">
         <div className="container">
-          <p className="navbar-text">TextShare</p>
+          <Link to="/docs">
+            <p className="navbar-text">TextShare</p>
+          </Link>
         </div>
       </nav>
     )

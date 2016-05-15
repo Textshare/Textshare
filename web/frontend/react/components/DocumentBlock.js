@@ -1,5 +1,6 @@
 import React from "react"
 import { Component } from "react"
+import { Link } from "react-router"
 import "./DocumentBlock.scss"
 
 class DocumentBlock extends Component {
@@ -13,7 +14,9 @@ class DocumentBlock extends Component {
     return (
       <div className="document-block">
         <div className="document-block-title">
-          {this.props.document.title}
+          <Link to={"/docs/" + this.props.document.id}>
+            {this.props.document.title}
+          </Link>
         </div>
         <div className="document-block-content">
           {this.blockContent()}

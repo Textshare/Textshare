@@ -8,7 +8,9 @@ import { keyDownHandler, keyUpHandler, onPasteHandler } from "./editor_input_han
 import "./Editor.scss"
 
 class Editor extends Component {
-  onInput = (_event, rowId, newText) => { this.props.setRowText(rowId, newText) }
+  onInput = (_event, rowId, newText) => {
+    this.props.setRowText(this.props.documentId, rowId, newText)
+  }
   onKeyDown = (event, rowId) => { keyDownHandler(event, rowId, this.props) }
   onKeyUp = (event, rowId) => { keyUpHandler(event, rowId, this.props) }
   onClick = (_event) => { this.props.setCursorPosition(window.getSelection().anchorOffset) }
@@ -41,15 +43,16 @@ class Editor extends Component {
   componentDidMount() {
     if (this.props.rows.length === 0) {
       let uuid = UUID.create().hex
-      this.props.addRow(uuid)
+      this.props.addRow(this.props.documentId, uuid)
       this.props.setFocusedRow(uuid)
     }
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+  let content = state.documents[props.documentId].content
   return {
-    rows: state.editor.rowOrder.map((rowId) => state.editor.rows[rowId]),
+    rows: content.rowOrder.map((rowId) => content.rows[rowId]),
     focusedRowId: state.editor.focusedRowId,
     cursorPosition: state.editor.cursorPosition
   }

@@ -50,10 +50,14 @@ function keyDownHandler(event, rowId, editor) {
       event.preventDefault()
       let focusedRowIndex = editor.rows.findIndex((row) => { return row.id === rowId })
       let previousRow = editor.rows[focusedRowIndex - 1]
-      editor.setRowText(previousRow.id, previousRow.text + editor.rows[focusedRowIndex].text)
+      editor.setRowText(
+        editor.documentId,
+        previousRow.id,
+        previousRow.text + editor.rows[focusedRowIndex].text
+      )
       editor.setFocusedRow(previousRow.id)
       editor.setCursorPosition(previousRow.text.length)
-      editor.removeRow(rowId)
+      editor.removeRow(editor.documentId, rowId)
     }
   }
   // delete
@@ -63,8 +67,10 @@ function keyDownHandler(event, rowId, editor) {
     window.getSelection().anchorOffset === editor.rows[focusedRowIndex].text.length) {
       event.preventDefault()
       let nextRow = editor.rows[focusedRowIndex + 1]
-      editor.setRowText(rowId, editor.rows[focusedRowIndex].text + nextRow.text)
-      editor.removeRow(nextRow.id)
+      editor.setRowText(
+        editor.documentId, rowId, editor.rows[focusedRowIndex].text + nextRow.text
+      )
+      editor.removeRow(editor.documentId, nextRow.id)
     }
   }
   // enter
@@ -72,9 +78,15 @@ function keyDownHandler(event, rowId, editor) {
     event.preventDefault()
     let focusedRow = editor.rows.find((row) => { return row.id === editor.focusedRowId })
     let uuid = UUID.create().hex
-    editor.addRow(uuid, editor.focusedRowId)
-    editor.setRowText(uuid, focusedRow.text.slice(editor.cursorPosition, focusedRow.text.length))
-    editor.setRowText(editor.focusedRowId, focusedRow.text.slice(0, editor.cursorPosition))
+    editor.addRow(editor.documentId, uuid, editor.focusedRowId)
+    editor.setRowText(
+      editor.documentId,
+      uuid,
+      focusedRow.text.slice(editor.cursorPosition, focusedRow.text.length)
+    )
+    editor.setRowText(
+      editor.documentId, editor.focusedRowId, focusedRow.text.slice(0, editor.cursorPosition)
+    )
     editor.setCursorPosition(0)
     event.newRowId = uuid
   }
@@ -86,7 +98,7 @@ function onPasteHandler(event, rowId, editor) {
     let unsanitizedHtml = event.clipboardData.getData("text/html")
     let temporaryElement = document.createElement("div")
     temporaryElement.innerHTML = unsanitizedHtml
-    editor.pasteTextToRow(rowId, temporaryElement.innerText)
+    editor.pasteTextToRow(editor.documentId, rowId, temporaryElement.innerText)
   }
 }
 
