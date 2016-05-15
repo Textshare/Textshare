@@ -41,12 +41,15 @@ module.exports = {
           "style",
           "css!sass?includePaths[]=" + __dirname +  "/node_modules"
         )
+      }, {
+        test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader : "file"
       }
     ]
   },
 
   plugins: [
     new ExtractTextPlugin("css/app.css"),
-    new CopyWebpackPlugin([{ from: "./web/frontend/assets" }])
+    new CopyWebpackPlugin([{ from: "./web/frontend/assets", to: "assets" }])
   ]
 }
