@@ -3,13 +3,18 @@ import { combineReducers } from "redux"
 const initialState = {}
 
 function initialDocumentState(uuid) {
-  return { title: "New document", content: { rowOrder: [], rows: {} } }
+  return { id: uuid, title: "New document", content: { rowOrder: [], rows: {} } }
 }
 
 function initialRowState(uuid) { return { id: uuid, text: "" } }
 
 export default function documentsReducer(state = initialState, action) {
   switch (action.type) {
+    case "ADD_DOCUMENT": {
+  // TODO: don't use temporary uuid once we start creating CRUD after authentication is implemented
+      return Object.assign({}, state, { [action.uuid]: initialDocumentState(action.uuid) })
+    }
+
     case "SET_TITLE": {
       const newDocument = Object.assign({}, state[action.documentId], { title: action.title })
       return Object.assign({}, state, { [action.documentId]: newDocument })
