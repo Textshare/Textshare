@@ -2,6 +2,17 @@ import React from "react";
 import fetch from "isomorphic-fetch";
 import { polyfill } from "es6-promise";
 
+const defaultHeaders = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+};
+
+function buildHeaders() {
+  const authToken = localStorage.getItem("phoenixAuthToken");
+
+  return { ...defaultHeaders, Authorization: authToken };
+}
+
 export function renderErrorsFor(errors, ref) {
   if (!errors) return false;
 
@@ -43,6 +54,25 @@ export function httpPost(url, data) {
     method: "post",
     headers: headers,
     body: body,
+  })
+  .then(checkStatus)
+  .then(parseJSON);
+}
+
+export function httpDelete(url) {
+
+  return fetch(url, {
+    method: "delete",
+    headers: buildHeaders(),
+  })
+  .then(checkStatus)
+  .then(parseJSON);
+}
+
+export function httpGet(url) {
+
+  return fetch(url, {
+    headers: buildHeaders(),
   })
   .then(checkStatus)
   .then(parseJSON);

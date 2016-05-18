@@ -6,6 +6,7 @@ import TestTwo from "components/TestTwo"
 import { connect } from "react-redux"
 import { Link } from "react-router";
 import TestActions from "redux/actions/test"
+import Actions from "../redux/actions/sessions";
 
 class Home extends Component {
   collection = [1, 2, 3]
@@ -18,6 +19,12 @@ class Home extends Component {
     this.props.addItem({ id: new Date().getTime(), text: "test" })
   }
 
+  _handleSignOutClick(e) {
+    e.preventDefault();
+
+    this.props.dispatch(Actions.signOut());
+  }
+
   userMessage = () => {
     let msg;
 
@@ -28,6 +35,20 @@ class Home extends Component {
     }
 
     return msg;
+  };
+
+  links = () => {
+    if(this.props.currentUser) {
+      return <a href="#" onClick={::this._handleSignOutClick}><i className="fa fa-sign-out"/> Sign out</a>
+    } else {
+      return(
+        <div>
+          <Link to="/sign_up">Sign up</Link>
+          <br/>
+          <Link to="/sign_in">Sign in</Link>
+        </div>
+      )
+    }
   };
 
   render() {
@@ -46,14 +67,14 @@ class Home extends Component {
           Add item
         </div>
         <h1>{this.userMessage()}</h1>
-         <Link to="/sign_up">Sign up</Link>
+        {this.links()}
       </div>
     )
   }
 }
 
-function mapStateToProps(state) {
-  return { test: state.test, currentUser: state.session.currentUser }
-}
+const mapStateToProps = (state) => ({
+  test: state.test, currentUser: state.session.currentUser,
+});
 
-export default connect(mapStateToProps, TestActions)(Home)
+export default connect(mapStateToProps)(Home);

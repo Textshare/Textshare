@@ -12,7 +12,7 @@ export default function createStore() {
   const reducer = combineReducers({
     editor: editorReducer,
     documents: documentsReducer,
-    routing: routerReducer
+    routing: routerReducer,
     registration: registrationReducer,
     session: sessionReducer,
   })
