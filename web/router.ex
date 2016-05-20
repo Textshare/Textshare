@@ -11,6 +11,19 @@ defmodule Textshare.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
+  end
+
+  scope "/api", Textshare do
+    pipe_through :api
+
+    scope "/v1" do
+      post "/registrations", RegistrationController, :create
+      post "/sessions", SessionController, :create
+      delete "/sessions", SessionController, :delete
+      get "/current_user", CurrentUserController, :show
+    end
   end
 
   scope "/", Textshare do
@@ -18,9 +31,4 @@ defmodule Textshare.Router do
 
     get "/*path", IndexController, :index
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", Textshare do
-  #   pipe_through :api
-  # end
 end
