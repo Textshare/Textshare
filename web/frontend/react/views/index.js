@@ -1,5 +1,6 @@
-import HomeView from "./HomeView"
 import DocumentsView from "./DocumentsView"
 import DocumentView from "./DocumentView"
+import SessionsNew from "./SessionsNew"
+import RegistrationsNew from "./RegistrationsNew"
 
-export { HomeView, DocumentsView, DocumentView }
+export { DocumentsView, DocumentView, SessionsNew, RegistrationsNew }

@@ -1,9 +1,7 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-
 import { renderErrorsFor } from "../utils";
-
 import Actions from "redux/actions/registrations";
 
 class RegistrationsNew extends React.Component {
@@ -26,32 +24,44 @@ class RegistrationsNew extends React.Component {
     const { errors } = this.props;
 
     return (
-      <div className="view-container registrations new">
-        <main>
-          <header>
-            <div className="logo" />
-          </header>
+      <div className="container-fluid">
+        <div className="col-lg-4 col-md-3 col-sm-2 col-xs-1"></div>
+        <div className="user-form col-lg-4 col-md-6 col-sm-8 col-sm-10">
           <form onSubmit={::this._handleSubmit}>
-            <div className="field">
-              <input ref="name" type="text" placeholder="Name" required={true} />
-              {renderErrorsFor(errors, "name")}
+            <div className="form-group">
+              <input className="form-control"
+                ref="name" type="text" placeholder="Name" required={true} />
+              <div style={{ color: "red" }}>
+                {renderErrorsFor(errors, "name")}
+              </div>
             </div>
-            <div className="field">
-              <input ref="email" type="email" placeholder="Email" required={true} />
-              {renderErrorsFor(errors, "email")}
+            <div className="form-group">
+              <input className="form-control"
+                ref="email" type="email" placeholder="Email" required={true} />
+              <div style={{ color: "red" }}>
+                {renderErrorsFor(errors, "email")}
+              </div>
             </div>
-            <div className="field">
-              <input ref="password" type="password" placeholder="Password" required={true} />
-              {renderErrorsFor(errors, "password")}
+            <div className="form-group">
+              <input className="form-control"
+                ref="password" type="password" placeholder="Password" required={true} />
+              <div style={{ color: "red" }}>
+                {renderErrorsFor(errors, "password")}
+              </div>
             </div>
-            <div className="field">
-              <input ref="passwordConfirmation" type="password" placeholder="Confirm password" required={true} />
-              {renderErrorsFor(errors, "password_confirmation")}
+            <div className="form-group">
+              <input className="form-control"
+                ref="passwordConfirmation" type="password" placeholder="Confirm password" required={true} />
+              <div style={{ color: "red" }}>
+                {renderErrorsFor(errors, "password_confirmation")}
+              </div>
             </div>
-            <button type="submit">Sign up</button>
-            <Link to="/">Home</Link>
+            <button className="btn btn-default" type="submit">Sign up</button>
+            <div style={{ marginTop: 10 }}>
+              <Link to="/">I already have an account</Link>
+            </div>
           </form>
-        </main>
+        </div>
       </div>
     );
   }

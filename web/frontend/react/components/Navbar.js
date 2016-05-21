@@ -15,14 +15,16 @@ class Editor extends Component {
   render() {
     return (
       <nav className="navbar navbar-inverse">
-        <div className="container">
-          <Link to="/docs">
+          <Link className="navbar-left" to="/docs">
             <p className="navbar-text">TextShare</p>
           </Link>
-        </div>
-        <div className="container">
-          <a href="#" onClick={::this._handleSignOutClick} className="navbar-text"> Sign out</a>
-        </div>
+          <a href="#"
+            onClick={::this._handleSignOutClick}
+            className="navbar-text"
+            style={{ float: "right" }}
+          >
+            Sign out
+          </a>
       </nav>
     )
   }

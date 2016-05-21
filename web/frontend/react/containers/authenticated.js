@@ -1,10 +1,8 @@
-import React            from "react";
-import { connect }      from "react-redux";
-import Actions          from "../redux/actions/sessions";
-import { browserHistory } from "react-router";
-import HomeView from "../views/HomeView.js";
-import Navbar from "../components/Navbar"
-import "../views/HomeView.scss"
+import React from "react"
+import { connect } from "react-redux"
+import Actions from "../redux/actions/sessions"
+import { browserHistory } from "react-router"
+import Navbar from "components/Navbar"
 
 class AuthenticatedContainer extends React.Component {
   componentDidMount() {
@@ -15,6 +13,8 @@ class AuthenticatedContainer extends React.Component {
       dispatch(Actions.currentUser());
     } else if (!phoenixAuthToken) {
       browserHistory.push("/sign_in");
+    } else {
+      browserHistory.push("/docs");
     }
   }
 

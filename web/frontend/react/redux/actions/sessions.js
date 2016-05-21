@@ -42,6 +42,7 @@ const Actions = {
       httpGet("/api/v1/current_user")
       .then(function(data) {
         setCurrentUser(dispatch, data);
+        browserHistory.push("/docs");
       })
       .catch(function(error) {
         browserHistory.push("/sign_in");

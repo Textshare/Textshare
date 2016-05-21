@@ -1,10 +1,9 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-
-import { renderErrorsFor } from "../utils";
-
+import { renderErrorsFor } from "utils";
 import Actions from "redux/actions/sessions";
+import "./SessionsNew.scss"
 
 class SessionsNew extends React.Component {
   _handleSubmit(e) {
@@ -30,23 +29,27 @@ class SessionsNew extends React.Component {
 
   render() {
     return (
-      <div className='view-container sessions new'>
-        <main>
-          <header>
-            <div className="logo" />
-          </header>
-          <form onSubmit={::this._handleSubmit}>
+      <div className="container-fluid">
+        <div className="col-lg-4 col-md-3 col-sm-2 col-xs-1"></div>
+        <div className="user-form col-lg-4 col-md-6 col-sm-8 col-sm-10">
+          <div style={{ marginBottom: 10, color: "red" }}>
             {::this._renderError()}
-            <div className="field">
-              <input ref="email" type="Email" placeholder="Say my email" required="true"/>
+          </div>
+          <form onSubmit={::this._handleSubmit}>
+            <div className="form-group">
+              <input className="form-control" ref="email"
+                type="Email" placeholder="Email" required="true"/>
             </div>
-            <div className="field">
-              <input ref="password" type="password" placeholder="Password" required="true"/>
+            <div className="form-group">
+              <input className="form-control" ref="password"
+                type="password" placeholder="Password" required="true"/>
             </div>
-            <button type="submit">Sign in</button>
+            <button className="btn btn-default" type="submit">Sign in</button>
           </form>
-          <Link to="/sign_up">Create new account</Link>
-        </main>
+          <div style={{ marginTop: 10 }}>
+            <Link to="/sign_up">Create new account</Link>
+          </div>
+        </div>
       </div>
     );
   }

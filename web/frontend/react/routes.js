@@ -1,9 +1,7 @@
 import React from "react";
 import { IndexRoute, Route } from "react-router";
-import { HomeView, DocumentsView, DocumentView } from "views";
+import { DocumentsView, DocumentView, RegistrationsNew, SessionsNew } from "views";
 import AuthenticatedContainer from "containers/authenticated";
-import RegistrationsNew from "views/RegistrationsNew";
-import SessionsNew from "views/SessionsNew";
 
 export default () => {
   return (
