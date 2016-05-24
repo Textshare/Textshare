@@ -5,6 +5,10 @@ defmodule Textshare.DocumentView do
     documents
   end
 
+  def render("show.json", %{document: document}) do
+    document
+  end
+
   def render("error.json", _) do
   end
 end
