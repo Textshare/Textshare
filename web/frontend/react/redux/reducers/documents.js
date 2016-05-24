@@ -66,6 +66,13 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
+    case "RESPONSE_DOCUMENTS": {
+      const normalizedDocuments = action.data.reduce((acc, doc) => {
+        return Object.assign(acc, { [doc.id]: doc })
+      }, {})
+      return Object.assign({}, state, normalizedDocuments)
+    }
+
     default:
       return state
   }

@@ -7,6 +7,10 @@ import DocumentBlock from "components/DocumentBlock"
 import "./DocumentList.scss"
 
 class DocumentList extends Component {
+  componentWillMount() {
+    this.props.fetchDocuments()
+  }
+
   newDocument = (_event) => {
   // TODO: don't use temporary uuid once we start creating CRUD after authentication is implemented
     let uuid = UUID.create().hex
