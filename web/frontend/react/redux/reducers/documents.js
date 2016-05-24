@@ -10,11 +10,6 @@ function initialRowState(uuid) { return { id: uuid, text: "" } }
 
 export default function documentsReducer(state = initialState, action) {
   switch (action.type) {
-    case "ADD_DOCUMENT": {
-  // TODO: don't use temporary uuid once we start creating CRUD after authentication is implemented
-      return Object.assign({}, state, { [action.uuid]: initialDocumentState(action.uuid) })
-    }
-
     case "SET_TITLE": {
       const newDocument = Object.assign({}, state[action.documentId], { title: action.title })
       return Object.assign({}, state, { [action.documentId]: newDocument })
@@ -64,6 +59,10 @@ export default function documentsReducer(state = initialState, action) {
         { content: { rowOrder: content.rowOrder, rows: newDocumentRows } }
       )
       return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
+    case "RESPONSE_DOCUMENT": {
+      return Object.assign({}, state, { [action.data.id]: action.data })
     }
 
     case "RESPONSE_DOCUMENTS": {

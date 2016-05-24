@@ -1,9 +1,16 @@
-import { httpGet } from "utils"
+import { httpGet, httpPost } from "utils"
 
-// TODO: don't use temporary uuid once we start creating CRUD after authentication is implemented
-export function addDocument(uuid) {
-  return { type: "ADD_DOCUMENT", uuid: uuid }
-}
+const initialDocumentState = { title: "New document", content: { rowOrder: [], rows: {} } }
+
+export function addDocument() { return (dispatch) => {
+  httpPost("/api/v1/documents", { document: initialDocumentState })
+  .then(function(data) {
+      dispatch({ type: "RESPONSE_DOCUMENT", data: data })
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+} }
 
 export function fetchDocuments() { return (dispatch) => {
   httpGet("/api/v1/documents")
