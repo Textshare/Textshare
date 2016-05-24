@@ -9,6 +9,10 @@ defmodule Textshare.DocumentView do
     document
   end
 
+  def render("delete.json", %{document: document}) do
+    document
+  end
+
   def render("error.json", _) do
   end
 end
