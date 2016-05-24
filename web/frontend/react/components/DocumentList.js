@@ -22,7 +22,11 @@ class DocumentList extends Component {
         </div>
         {
           this.props.documents.map((document) =>
-            <DocumentBlock key={document.id} document={document}></DocumentBlock>
+            <DocumentBlock
+              key={document.id}
+              document={document}
+              removeDocument={this.props.removeDocument}
+            ></DocumentBlock>
           )
         }
       </div>

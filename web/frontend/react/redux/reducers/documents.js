@@ -72,6 +72,13 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, normalizedDocuments)
     }
 
+    case "REMOVED_DOCUMENT": {
+      return Object.keys(state).reduce((acc, documentId) => {
+        return state[documentId].id === action.data.id ? acc :
+          Object.assign({}, acc, { [documentId]: state[documentId] })
+      }, {})
+    }
+
     default:
       return state
   }

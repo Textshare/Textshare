@@ -1,11 +1,21 @@
-import { httpGet, httpPost } from "utils"
+import { httpGet, httpPost, httpDelete } from "utils"
 
 const initialDocumentState = { title: "New document", content: { rowOrder: [], rows: {} } }
 
 export function addDocument() { return (dispatch) => {
   httpPost("/api/v1/documents", { document: initialDocumentState })
-  .then(function(data) {
+    .then(function(data) {
       dispatch({ type: "RESPONSE_DOCUMENT", data: data })
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+} }
+
+export function removeDocument(doc) { return (dispatch) => {
+  httpDelete("/api/v1/documents/" + doc.id)
+    .then(function(data) {
+      dispatch({ type: "REMOVED_DOCUMENT", data: data })
     })
     .catch(function(error) {
       console.log(error)
