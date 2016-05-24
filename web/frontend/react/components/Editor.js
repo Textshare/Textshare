@@ -30,6 +30,7 @@ class Editor extends Component {
           value={this.props.editedDocument.title}
           type="text"
           onChange={this._onTitleChange}
+          size={50}
         ></input>
         {this.props.rows.map((row) =>
           <Row
