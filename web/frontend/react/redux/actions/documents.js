@@ -1,9 +1,16 @@
-import { httpGet, httpPost, httpDelete } from "utils"
+import { httpGet, httpPost, httpPut, httpDelete } from "utils"
+import UUID from "uuid-js"
 
-const initialDocumentState = { title: "New document", content: { rowOrder: [], rows: {} } }
+function initialDocumentState() {
+  let uuid = UUID.create().hex
+  return {
+    title: "New document",
+    content: { rowOrder: [uuid], rows: { [uuid]: { id: uuid, text: "" } } }
+  }
+}
 
 export function addDocument() { return (dispatch) => {
-  httpPost("/api/v1/documents", { document: initialDocumentState })
+  httpPost("/api/v1/documents", { document: initialDocumentState() })
     .then(function(data) {
       dispatch({ type: "RESPONSE_DOCUMENT", data: data })
     })
@@ -19,6 +26,16 @@ export function getDocument(documentId) { return (dispatch) => {
     })
     .catch(function(error) {
       console.log(error)
+    })
+} }
+
+export function updateDocument(documentId) { return (dispatch, getState) => {
+  const document = getState().documents[documentId]
+  httpPut("/api/v1/documents/" + documentId, { title: document.title, content: document.content })
+    .then(function(data) {
+    })
+    .catch(function(error) {
+      console.log(error.response)
     })
 } }
 

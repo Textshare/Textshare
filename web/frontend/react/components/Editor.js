@@ -13,6 +13,10 @@ class Editor extends Component {
     this.props.getDocument(this.props.documentId)
   }
 
+  updateDocument = () => {
+    this.props.updateDocument(this.props.documentId)
+  }
+
   _onTitleChange = (event) => {
     this.props.setTitle(this.props.documentId, event.target.value)
   }
@@ -35,6 +39,7 @@ class Editor extends Component {
           value={this.props.editedDocument.title}
           type="text"
           onChange={this._onTitleChange}
+          onBlur={this.updateDocument}
           size={50}
         ></input>
         {this.props.rows.map((row) =>
