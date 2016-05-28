@@ -4,6 +4,7 @@ import "./DocumentsView.scss"
 import DocumentList from "components/DocumentList"
 import { setSearchText } from "../redux/actions/search"
 import { connect } from "react-redux"
+import "./SearchInput.scss"
 
 class DocumentsView extends Component {
   _searchPhraseChanged = (event) => {
@@ -15,7 +16,16 @@ class DocumentsView extends Component {
   render() {
     return (
       <div>
-        <input type="search" name="documents-search" onChange={this._searchPhraseChanged}/>
+        <div className="row">
+          <div className="col-lg-6 col-lg-offset-3 search-input">
+            <input
+              type="search"
+              className="form-control"
+              name="documents-search"
+              placeholder="Search..."
+              onChange={this._searchPhraseChanged}/>
+          </div>
+        </div>
         <DocumentList></DocumentList>
       </div>
     )
