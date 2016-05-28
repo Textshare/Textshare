@@ -61,6 +61,10 @@ class Editor extends Component {
     )
   }
 
+  componentDidUpdate() {
+    this.props.updateDocument(this.props.documentId)
+  }
+
   componentDidMount() {
     if (this.props.rows.length === 0) {
       let uuid = UUID.create().hex

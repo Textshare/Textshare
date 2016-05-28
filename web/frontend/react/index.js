@@ -22,7 +22,6 @@ ReactDOM.render(
       <Router history={history}>
         {routes()}
       </Router>
-      <DevTools />
     </div>
   </Provider>,
   document.getElementById("main")
