@@ -12,6 +12,16 @@ export function addDocument() { return (dispatch) => {
     })
 } }
 
+export function getDocument(documentId) { return (dispatch) => {
+  httpGet("/api/v1/documents/" + documentId)
+    .then(function(data) {
+      dispatch({ type: "RESPONSE_DOCUMENT", data: data })
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+} }
+
 export function removeDocument(doc) { return (dispatch) => {
   httpDelete("/api/v1/documents/" + doc.id)
     .then(function(data) {
