@@ -1,9 +1,10 @@
 defmodule Textshare.Document do
   use Textshare.Web, :model
+  @derive {Poison.Encoder, only: [:id, :title, :content]}
 
   schema "documents" do
     field :title, :string
-    field :content, {:array, :string}
+    field :content, :map
 
     belongs_to :owner, {"users", Textshare.User}, foreign_key: :user_id
     has_many :document_tags, Textshare.DocumentTag

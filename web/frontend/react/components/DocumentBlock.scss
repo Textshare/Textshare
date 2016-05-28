@@ -22,3 +22,9 @@
   overflow: hidden;
   max-height: calc(100% - 52px);
 }
+
+.remove-button {
+  cursor: pointer;
+  display: inline;
+  font-size: 30px;
+}

@@ -3,7 +3,7 @@ import { Component } from "react"
 import "./DocumentView.scss"
 import Editor from "components/Editor"
 
-class DocumentsView extends Component {
+class DocumentView extends Component {
   render() {
     return (
       <div>
@@ -13,4 +13,4 @@ class DocumentsView extends Component {
   }
 }
 
-export default DocumentsView
+export default DocumentView

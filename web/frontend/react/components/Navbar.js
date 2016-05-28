@@ -5,7 +5,7 @@ import "./Navbar.scss";
 import Actions from "../redux/actions/sessions";
 import { connect } from "react-redux";
 
-class Editor extends Component {
+class Navbar extends Component {
   _handleSignOutClick(e) {
     e.preventDefault();
 
@@ -34,4 +34,4 @@ const mapStateToProps = (state) => ({
   currentUser: state.session.currentUser,
 });
 
-export default connect(mapStateToProps)(Editor);
+export default connect(mapStateToProps)(Navbar);

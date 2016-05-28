@@ -2,15 +2,16 @@ import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
 import * as DocumentsActions from "redux/actions/documents"
-import UUID from "uuid-js"
 import DocumentBlock from "components/DocumentBlock"
 import "./DocumentList.scss"
 
 class DocumentList extends Component {
+  componentWillMount() {
+    this.props.fetchDocuments()
+  }
+
   newDocument = (_event) => {
-  // TODO: don't use temporary uuid once we start creating CRUD after authentication is implemented
-    let uuid = UUID.create().hex
-    this.props.addDocument(uuid)
+    this.props.addDocument()
   }
 
   render() {
@@ -21,7 +22,11 @@ class DocumentList extends Component {
         </div>
         {
           this.props.documents.map((document) =>
-            <DocumentBlock key={document.id} document={document}></DocumentBlock>
+            <DocumentBlock
+              key={document.id}
+              document={document}
+              removeDocument={this.props.removeDocument}
+            ></DocumentBlock>
           )
         }
       </div>

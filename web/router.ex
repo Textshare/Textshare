@@ -23,6 +23,8 @@ defmodule Textshare.Router do
       post "/sessions", SessionController, :create
       delete "/sessions", SessionController, :delete
       get "/current_user", CurrentUserController, :show
+
+      resources "/documents", DocumentController, only: [:index, :create, :delete]
     end
   end
 
