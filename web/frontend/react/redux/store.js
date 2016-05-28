@@ -6,6 +6,7 @@ import registrationReducer from "./reducers/registration";
 import sessionReducer from "./reducers/session";
 import editorReducer from "./reducers/editor";
 import documentsReducer from "./reducers/documents";
+import searchReducer from "./reducers/search";
 
 export default function createStore() {
   const middleware = [thunkMiddleware]
@@ -15,6 +16,7 @@ export default function createStore() {
     routing: routerReducer,
     registration: registrationReducer,
     session: sessionReducer,
+    search: searchReducer,
   })
   const enhancer = compose(applyMiddleware(...middleware), DevTools.instrument());
 
