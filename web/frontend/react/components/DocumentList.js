@@ -14,6 +14,11 @@ class DocumentList extends Component {
     this.props.addDocument()
   }
 
+  documentTitleMatchSearchText = (documentTitle) => {
+    if(!this.props.search_text) return true;
+    return documentTitle.toLowerCase().indexOf(this.props.search_text.toLowerCase()) > -1;
+  }
+
   render() {
     return (
       <div>
@@ -21,7 +26,9 @@ class DocumentList extends Component {
           <div>Add document</div>
         </div>
         {
-          this.props.documents.map((document) =>
+          this.props.documents
+            .filter((document) => this.documentTitleMatchSearchText(document.title))
+            .map((document) =>
             <DocumentBlock
               key={document.id}
               document={document}
@@ -36,7 +43,8 @@ class DocumentList extends Component {
 
 function mapStateToProps(state) {
   return {
-    documents: Object.keys(state.documents).map((key) => state.documents[key])
+    documents: Object.keys(state.documents).map((key) => state.documents[key]),
+    search_text: state.search.text,
   }
 }
 
