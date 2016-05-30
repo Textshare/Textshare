@@ -18,7 +18,8 @@ export default function createStore() {
     session: sessionReducer,
     search: searchReducer,
   })
-  const enhancer = compose(applyMiddleware(...middleware), DevTools.instrument());
+  // const enhancer = compose(applyMiddleware(...middleware), DevTools.instrument());
+  const enhancer = compose(applyMiddleware(...middleware));
 
   const store = _createStore(reducer, enhancer);
 

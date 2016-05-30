@@ -59,6 +59,18 @@ export function httpPost(url, data) {
   .then(parseJSON);
 }
 
+export function httpPut(url, data) {
+  const body = JSON.stringify(data);
+
+  return fetch(url, {
+    method: "put",
+    headers: buildHeaders(),
+    body: body,
+  })
+  .then(checkStatus)
+  .then(parseJSON);
+}
+
 export function httpDelete(url) {
 
   return fetch(url, {

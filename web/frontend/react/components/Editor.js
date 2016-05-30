@@ -2,12 +2,21 @@ import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
 import Row from "components/Row"
+import * as DocumentsActions from "redux/actions/documents"
 import * as EditorActions from "redux/actions/editor"
 import UUID from "uuid-js"
 import { keyDownHandler, keyUpHandler, onPasteHandler } from "./editor_input_handler"
 import "./Editor.scss"
 
 class Editor extends Component {
+  componentWillMount() {
+    this.props.getDocument(this.props.documentId)
+  }
+
+  updateDocument = () => {
+    this.props.updateDocument(this.props.documentId)
+  }
+
   _onTitleChange = (event) => {
     this.props.setTitle(this.props.documentId, event.target.value)
   }
@@ -30,6 +39,7 @@ class Editor extends Component {
           value={this.props.editedDocument.title}
           type="text"
           onChange={this._onTitleChange}
+          onBlur={this.updateDocument}
           size={50}
         ></input>
         {this.props.rows.map((row) =>
@@ -51,6 +61,10 @@ class Editor extends Component {
     )
   }
 
+  componentDidUpdate() {
+    this.props.updateDocument(this.props.documentId)
+  }
+
   componentDidMount() {
     if (this.props.rows.length === 0) {
       let uuid = UUID.create().hex
@@ -70,4 +84,4 @@ function mapStateToProps(state, props) {
   }
 }
 
-export default connect(mapStateToProps, EditorActions)(Editor)
+export default connect(mapStateToProps, Object.assign({}, EditorActions, DocumentsActions))(Editor)

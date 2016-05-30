@@ -15,6 +15,21 @@ defmodule Textshare.DocumentController do
     |> render("index.json", documents: documents)
   end
 
+  def show(conn, %{"id" => document_id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    document = Repo.get!(Document, document_id)
+
+    if current_user.id == document.user_id do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", document: document )
+    else
+      conn
+      |> put_status(:forbidden)
+      |> render(Textshare.SessionView, "forbidden.json", error: "Not Authenticated")
+    end
+  end
+
   def create(conn, %{"document" => document_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     changeset = current_user
@@ -30,6 +45,32 @@ defmodule Textshare.DocumentController do
         conn
         |> put_status(:unprocessable_entity)
         |> render("error.json", changeset: changeset)
+    end
+  end
+
+  def update(conn, params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    document = Repo.get!(Document, Map.get(params, "id"))
+
+    if current_user.id == document.user_id do
+      changeset = Document.changeset(
+        document, params
+      )
+
+      case Repo.update(changeset) do
+        {:ok, document} ->
+          conn
+          |> put_status(:ok)
+          |> render("show.json", document: document )
+        {:error, changeset} ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> render("error.json", changeset: changeset)
+      end
+    else
+      conn
+      |> put_status(:forbidden)
+      |> render(Textshare.SessionView, "forbidden.json", error: "Not Authenticated")
     end
   end
 
