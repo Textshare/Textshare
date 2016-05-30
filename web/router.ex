@@ -25,6 +25,11 @@ defmodule Textshare.Router do
       get "/current_user", CurrentUserController, :show
 
       resources "/documents", DocumentController, only: [:show, :update, :index, :create, :delete]
+      resources "/tag_suggestions", TagSuggestionsController, only: [:index]
+
+      get "/documents/:document_id/tags", TagController, :index
+      post "/documents/:document_id/tags", TagController, :create
+      delete "/documents/:document_id/tags/:tag_id", TagController, :delete
     end
   end
 
