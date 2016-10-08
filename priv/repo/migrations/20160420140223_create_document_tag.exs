@@ -3,8 +3,8 @@ defmodule Textshare.Repo.Migrations.CreateDocumentTag do
 
   def change do
     create table(:document_tags) do
-      add :tag_id, references(:tags, on_delete: :nothing)
-      add :document_id, references(:documents, on_delete: :nothing)
+      add :tag_id, references(:tags, on_delete: :delete_all)
+      add :document_id, references(:documents, on_delete: :delete_all)
 
       timestamps
     end
