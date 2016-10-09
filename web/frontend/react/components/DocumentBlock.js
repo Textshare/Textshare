@@ -4,12 +4,6 @@ import { Link } from "react-router"
 import "./DocumentBlock.scss"
 
 class DocumentBlock extends Component {
-  blockContent = () => {
-    if (this.props.document.content.rowOrder.length) {
-      return this.props.document.content.rows[this.props.document.content.rowOrder[0]].text
-    }
-  }
-
   removeDocument = () => { this.props.removeDocument(this.props.document) }
 
   render() {
@@ -26,7 +20,7 @@ class DocumentBlock extends Component {
           </div>
         </div>
         <div className="document-block-content" style={{ clear: "both" }}>
-          {this.blockContent()}
+          {this.props.document.content}
         </div>
       </div>
     )

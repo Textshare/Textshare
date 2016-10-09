@@ -4,7 +4,7 @@ defmodule Textshare.Document do
 
   schema "documents" do
     field :title, :string
-    field :content, :map
+    field :content, :string
 
     belongs_to :owner, {"users", Textshare.User}, foreign_key: :user_id
     has_many :document_tags, Textshare.DocumentTag
