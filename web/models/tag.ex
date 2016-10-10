@@ -1,5 +1,6 @@
 defmodule Textshare.Tag do
   use Textshare.Web, :model
+  @derive {Poison.Encoder, only: [:id, :name]}
 
   schema "tags" do
     field :name, :string

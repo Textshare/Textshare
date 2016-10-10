@@ -62,7 +62,8 @@ export default function documentsReducer(state = initialState, action) {
     }
 
     case "RESPONSE_DOCUMENT": {
-      return Object.assign({}, state, { [action.data.id]: action.data })
+      const newDocument = Object.assign({}, state[action.data.id] || {}, action.data)
+      return Object.assign({}, state, { [action.data.id]: newDocument })
     }
 
     case "RESPONSE_DOCUMENTS": {
@@ -77,6 +78,32 @@ export default function documentsReducer(state = initialState, action) {
         return state[documentId].id === action.data.id ? acc :
           Object.assign({}, acc, { [documentId]: state[documentId] })
       }, {})
+    }
+
+    case "RESPONSE_TAGS": {
+      const newDocument = Object.assign({},
+        state[action.documentId],
+        { tagIds: action.data.map((tag) => { return tag.id }) }
+      )
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
+    case "RESPONSE_TAG": {
+      const newDocument = Object.assign({},
+        state[action.documentId],
+        { tagIds: (state[action.documentId].tagIds || []).concat(action.tag.id) }
+      )
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
+    case "REMOVE_TAG": {
+      const newTagIds = state[action.documentId].tagIds.filter((tagId) => {
+        return tagId !== action.tagId
+      })
+      const newDocument = Object.assign({},
+        state[action.documentId], { tagIds: newTagIds }
+      )
+      return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
     default:

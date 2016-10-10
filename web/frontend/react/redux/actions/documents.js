@@ -35,7 +35,7 @@ export function updateDocument(documentId) { return (dispatch, getState) => {
     .then(function(data) {
     })
     .catch(function(error) {
-      console.log(error.response)
+      console.log(error)
     })
 } }
 

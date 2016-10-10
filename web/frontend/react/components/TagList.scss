@@ -1,0 +1,41 @@
+.ReactTags__selected {
+  float: left;
+}
+
+.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #eee;
+  font-size: 12px;
+  display: inline-block;
+  padding: 3px 5px;
+  margin: 0 5px;
+  border-radius: 2px;
+}
+
+.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.ReactTags__tagInput {
+  width: 200px;
+  border-radius: 2px;
+  display: inline-block;
+
+  input {
+    padding: 0px 4px;
+    height: 31px;
+    margin: 0;
+    font-size: 12px;
+    width: 100%;
+    border: 1px solid #eee;
+  }
+}
+
+.ReactTags__suggestions {
+  position: absolute;
+}
+
+.ReactTags__tags {
+}
