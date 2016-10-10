@@ -2,11 +2,7 @@ import { httpGet, httpPost, httpPut, httpDelete } from "utils"
 import UUID from "uuid-js"
 
 function initialDocumentState() {
-  let uuid = UUID.create().hex
-  return {
-    title: "New document",
-    content: { rowOrder: [uuid], rows: { [uuid]: { id: uuid, text: "" } } }
-  }
+  return { title: "New document", content: "" }
 }
 
 export function addDocument() { return (dispatch) => {

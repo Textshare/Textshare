@@ -1,12 +1,13 @@
 import React from "react"
+import { findDOMNode } from "react-dom"
 import { Component } from "react"
 import { connect } from "react-redux"
-import Row from "components/Row"
 import * as DocumentsActions from "redux/actions/documents"
 import * as EditorActions from "redux/actions/editor"
 import UUID from "uuid-js"
-import { keyDownHandler, keyUpHandler, onPasteHandler } from "./editor_input_handler"
 import "./Editor.scss"
+import CodeMirror from "codemirror"
+import "codemirror/lib/codemirror.css"
 
 class Editor extends Component {
   componentWillMount() {
@@ -21,15 +22,9 @@ class Editor extends Component {
     this.props.setTitle(this.props.documentId, event.target.value)
   }
 
-  onInput = (_event, rowId, newText) => {
-    this.props.setRowText(this.props.documentId, rowId, newText)
+  _onContentChange = (newContent) => {
+    this.props.setContent(this.props.documentId, newContent)
   }
-  onKeyDown = (event, rowId) => { keyDownHandler(event, rowId, this.props) }
-  onKeyUp = (event, rowId) => { keyUpHandler(event, rowId, this.props) }
-  onClick = (_event) => { this.props.setCursorPosition(window.getSelection().anchorOffset) }
-  onBlur = (_event) => { this.props.setFocusedRow(null) }
-  onFocus = (_event, rowId) => { this.props.setFocusedRow(rowId) }
-  onPaste = (event, rowId) => { onPasteHandler(event, rowId, this.props) }
 
   render() {
     return (
@@ -42,45 +37,36 @@ class Editor extends Component {
           onBlur={this.updateDocument}
           size={50}
         ></input>
-        {this.props.rows.map((row) =>
-          <Row
-            key={row.id}
-            row={row}
-            focusedRowId={this.props.focusedRowId}
-            cursorPosition={this.props.cursorPosition}
-            onInput={this.onInput}
-            onKeyDown={this.onKeyDown}
-            onKeyUp={this.onKeyUp}
-            onClick={this.onClick}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onPaste={this.onPaste}
-          ></Row>
-        )}
+        <div className="codemirror-container">
+          <textarea ref="codemirror"></textarea>
+        </div>
       </div>
     )
   }
 
-  componentDidUpdate() {
-    this.props.updateDocument(this.props.documentId)
+  componentDidMount() {
+    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
+    this.codeMirror.setValue(this.props.editedDocument.content || "")
+    this.codeMirror.on("change", (cm, change) => {
+      if (change.origin !== "setValue") {
+        console.log("here1");
+        this._onContentChange(cm.getValue())
+        this.updateDocument()
+      }
+    })
+    window.hack = this.codeMirror
   }
 
-  componentDidMount() {
-    if (this.props.rows.length === 0) {
-      let uuid = UUID.create().hex
-      this.props.addRow(this.props.documentId, uuid)
-      this.props.setFocusedRow(uuid)
+  componentWillReceiveProps(nextProps) {
+    if (this.codeMirror.getValue() !== nextProps.editedDocument.content) {
+      this.codeMirror.setValue(nextProps.editedDocument.content, "setValue")
     }
   }
 }
 
 function mapStateToProps(state, props) {
-  let content = state.documents[props.documentId].content
   return {
     editedDocument: state.documents[props.documentId],
-    rows: content.rowOrder.map((rowId) => content.rows[rowId]),
-    focusedRowId: state.editor.focusedRowId,
-    cursorPosition: state.editor.cursorPosition
   }
 }
 
