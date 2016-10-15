@@ -22,8 +22,9 @@ class Editor extends Component {
     this.props.setTitle(this.props.documentId, event.target.value)
   }
 
-  _onContentChange = (newContent) => {
+  _onContentChange = (newContent, newRowIds) => {
     this.props.setContent(this.props.documentId, newContent)
+    this.props.setRowIds(this.props.documentId, newRowIds)
   }
 
   render() {
@@ -49,8 +50,20 @@ class Editor extends Component {
     this.codeMirror.setValue(this.props.editedDocument.content || "")
     this.codeMirror.on("change", (cm, change) => {
       if (change.origin !== "setValue") {
-        console.log("here1");
-        this._onContentChange(cm.getValue())
+        const newRowCount = cm.lineCount()
+        const targetRowId = this.props.editedDocument.row_ids[change.from.line]
+        const rowCountDiff = newRowCount - this.props.editedDocument.row_ids.length
+        let newRowIds = this.props.editedDocument.row_ids.slice()
+        if (rowCountDiff < 0) {
+          newRowIds.splice(change.from.line, Math.abs(rowCountDiff))
+        } else if (rowCountDiff > 0) {
+          const additionalRowIds = [...Array(rowCountDiff).keys()].map(
+            () => { return UUID.create().hex }
+          )
+          newRowIds.splice(change.from.line + 1, 0, ...additionalRowIds)
+        }
+
+        this._onContentChange(cm.getValue(), newRowIds)
         this.updateDocument()
       }
     })

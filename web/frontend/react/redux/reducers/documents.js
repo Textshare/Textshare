@@ -14,6 +14,11 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
+    case "SET_ROW_IDS": {
+      const newDocument = Object.assign({}, state[action.documentId], { row_ids: action.rowIds })
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
     case "RESPONSE_DOCUMENT": {
       const newDocument = Object.assign({}, state[action.data.id] || {}, action.data)
       return Object.assign({}, state, { [action.data.id]: newDocument })
