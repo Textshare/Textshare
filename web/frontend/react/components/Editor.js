@@ -48,6 +48,15 @@ class Editor extends Component {
   componentDidMount() {
     this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
     this.codeMirror.setValue(this.props.editedDocument.content || "")
+
+    this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
+    this.channel.on("document_changed", (payload) => {
+      console.log(payload, "doc");
+    })
+    this.channel.join()
+      .receive("ok", resp => { console.log("Joined successfully", resp) })
+      .receive("error", resp => { console.log("Unable to join", resp) })
+
     this.codeMirror.on("change", (cm, change) => {
       if (change.origin !== "setValue") {
         const newRowCount = cm.lineCount()
@@ -65,6 +74,8 @@ class Editor extends Component {
 
         this._onContentChange(cm.getValue(), newRowIds)
         this.updateDocument()
+
+        this.channel.push("document_changed", { body: { ziemniaczany: "potworek" } })
       }
     })
     window.hack = this.codeMirror
@@ -75,11 +86,16 @@ class Editor extends Component {
       this.codeMirror.setValue(nextProps.editedDocument.content, "setValue")
     }
   }
+
+  componentWillUnmount() {
+    this.channel.leave()
+  }
 }
 
 function mapStateToProps(state, props) {
   return {
     editedDocument: state.documents[props.documentId],
+    socket: state.session.socket,
   }
 }
 
