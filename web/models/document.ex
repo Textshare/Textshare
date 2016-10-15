@@ -1,10 +1,11 @@
 defmodule Textshare.Document do
   use Textshare.Web, :model
-  @derive {Poison.Encoder, only: [:id, :title, :content]}
+  @derive {Poison.Encoder, only: [:id, :title, :content, :row_ids]}
 
   schema "documents" do
     field :title, :string
     field :content, :string
+    field :row_ids, {:array, :string}
 
     belongs_to :owner, {"users", Textshare.User}, foreign_key: :user_id
     has_many :document_tags, Textshare.DocumentTag
@@ -16,7 +17,7 @@ defmodule Textshare.Document do
   end
 
   @required_fields ~w(title user_id)
-  @optional_fields ~w(content)
+  @optional_fields ~w(content row_ids)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

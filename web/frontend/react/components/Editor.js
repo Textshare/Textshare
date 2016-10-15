@@ -22,8 +22,9 @@ class Editor extends Component {
     this.props.setTitle(this.props.documentId, event.target.value)
   }
 
-  _onContentChange = (newContent) => {
+  _onContentChange = (newContent, newRowIds) => {
     this.props.setContent(this.props.documentId, newContent)
+    this.props.setRowIds(this.props.documentId, newRowIds)
   }
 
   render() {
@@ -45,16 +46,68 @@ class Editor extends Component {
   }
 
   componentDidMount() {
+    this.token = UUID.create().hex
+
     this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
     this.codeMirror.setValue(this.props.editedDocument.content || "")
+
+    this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
+    window.ziemniak = (payload) => {
+      if (payload.body.token !== this.token) {
+        const change = payload.body.change
+
+        const targetLine = this.props.editedDocument.row_ids.indexOf(payload.body.targetRowId)
+        const changeFrom = { ch: change.from.ch, line: targetLine }
+        const changeTo =
+          { ch: change.to.ch, line: targetLine + (change.to.line - change.from.line) }
+        this.codeMirror.replaceRange(change.replacement, changeFrom, changeTo, "sync")
+
+        const newRowCount = this.codeMirror.lineCount()
+        const rowCountDiff = newRowCount - this.props.editedDocument.row_ids.length
+        let newRowIds = this.props.editedDocument.row_ids.slice()
+        if (rowCountDiff < 0) {
+          newRowIds.splice(change.from.line, Math.abs(rowCountDiff))
+        } else if (rowCountDiff > 0) {
+          newRowIds.splice(change.from.line + 1, 0, ...payload.body.additionalRowIds)
+        }
+
+        this._onContentChange(this.codeMirror.getValue(), newRowIds)
+      }
+    }
+    this.channel.on("document_changed", window.ziemniak)
+    this.channel.join()
+      .receive("ok", resp => { console.log("Joined successfully", resp) })
+      .receive("error", resp => { console.log("Unable to join", resp) })
+
     this.codeMirror.on("change", (cm, change) => {
-      if (change.origin !== "setValue") {
-        console.log("here1");
-        this._onContentChange(cm.getValue())
+      if (change.origin !== "setValue" && change.origin !== "sync") {
+        const newRowCount = cm.lineCount()
+        const targetRowId = this.props.editedDocument.row_ids[change.from.line]
+        const rowCountDiff = newRowCount - this.props.editedDocument.row_ids.length
+        let newRowIds = this.props.editedDocument.row_ids.slice()
+        let additionalRowIds = []
+        if (rowCountDiff < 0) {
+          newRowIds.splice(change.from.line, Math.abs(rowCountDiff))
+        } else if (rowCountDiff > 0) {
+          additionalRowIds = [...Array(rowCountDiff).keys()].map(
+            () => { return UUID.create().hex }
+          )
+          newRowIds.splice(change.from.line + 1, 0, ...additionalRowIds)
+        }
+
+        this._onContentChange(cm.getValue(), newRowIds)
         this.updateDocument()
+
+        this.channel.push("document_changed", { body:
+          {
+            change: { replacement: change.text.join("\n"), from: change.from, to: change.to },
+            targetRowId: targetRowId,
+            additionalRowIds: additionalRowIds,
+            token: this.token
+          }
+        })
       }
     })
-    window.hack = this.codeMirror
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,11 +115,16 @@ class Editor extends Component {
       this.codeMirror.setValue(nextProps.editedDocument.content, "setValue")
     }
   }
+
+  componentWillUnmount() {
+    this.channel.leave()
+  }
 }
 
 function mapStateToProps(state, props) {
   return {
     editedDocument: state.documents[props.documentId],
+    socket: state.session.socket,
   }
 }
 

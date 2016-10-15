@@ -2,7 +2,8 @@ import { httpGet, httpPost, httpPut, httpDelete } from "utils"
 import UUID from "uuid-js"
 
 function initialDocumentState() {
-  return { title: "New document", content: "" }
+  const rowUuid = UUID.create().hex
+  return { title: "New document", content: "", row_ids: [rowUuid] }
 }
 
 export function addDocument() { return (dispatch) => {
@@ -27,7 +28,9 @@ export function getDocument(documentId) { return (dispatch) => {
 
 export function updateDocument(documentId) { return (dispatch, getState) => {
   const document = getState().documents[documentId]
-  httpPut("/api/v1/documents/" + documentId, { title: document.title, content: document.content })
+  httpPut("/api/v1/documents/" + documentId, {
+    title: document.title, content: document.content, row_ids: document.row_ids
+  })
     .then(function(data) {
     })
     .catch(function(error) {
