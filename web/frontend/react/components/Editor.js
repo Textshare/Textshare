@@ -52,7 +52,7 @@ class Editor extends Component {
     this.codeMirror.setValue(this.props.editedDocument.content || "")
 
     this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
-    window.ziemniak = (payload) => {
+    this.channel.on("document_changed", (payload) => {
       if (payload.body.token !== this.token) {
         const change = payload.body.change
 
@@ -73,8 +73,7 @@ class Editor extends Component {
 
         this._onContentChange(this.codeMirror.getValue(), newRowIds)
       }
-    }
-    this.channel.on("document_changed", window.ziemniak)
+    })
     this.channel.join()
       .receive("ok", resp => { console.log("Joined successfully", resp) })
       .receive("error", resp => { console.log("Unable to join", resp) })
