@@ -8,8 +8,7 @@ class DocumentView extends Component {
   render() {
     return (
       <div>
-        <TagList documentId={this.props.params.documentId}></TagList>
-        <Editor documentId={this.props.params.documentId}></Editor>
+        <Editor></Editor>
       </div>
     )
   }

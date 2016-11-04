@@ -7,11 +7,7 @@ export default () => {
   return (
     <div>
     <Route path="/" component={AuthenticatedContainer}>
-      <Route path="/docs" component={DocumentsView}></Route>
-      <Route path="/docs/:documentId" component={DocumentView}></Route>
     </Route>
-    <Route path="/sign_up" component={RegistrationsNew}></Route>
-    <Route path="/sign_in" component={SessionsNew}></Route>
     </div>
   )
 }

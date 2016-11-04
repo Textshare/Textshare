@@ -9,13 +9,13 @@ class Navbar extends Component {
   _handleSignOutClick(e) {
     e.preventDefault();
 
-    this.props.dispatch(Actions.signOut());
+    // this.props.dispatch(Actions.signOut());
   }
 
   render() {
     return (
       <nav className="navbar navbar-inverse">
-          <Link className="navbar-left" to="/docs">
+          <Link className="navbar-left" to="/">
             <p className="navbar-text">TextShare</p>
           </Link>
           <a href="#"
