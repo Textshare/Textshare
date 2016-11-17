@@ -17,14 +17,7 @@ class DocumentsView extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-lg-6 col-lg-offset-3 search-input">
-            <input
-              type="search"
-              className="form-control"
-              name="documents-search"
-              placeholder="Search..."
-              onChange={this._searchPhraseChanged}/>
-          </div>
+
         </div>
         <DocumentList></DocumentList>
       </div>
