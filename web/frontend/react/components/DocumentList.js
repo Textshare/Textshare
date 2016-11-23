@@ -14,9 +14,16 @@ class DocumentList extends Component {
     this.props.addDocument()
   }
 
-  documentTitleMatchSearchText = (documentTitle) => {
-    if(!this.props.search_text) return true;
-    return documentTitle.toLowerCase().indexOf(this.props.search_text.toLowerCase()) > -1;
+  filterByTitleAndTags = (document) => {
+    if (!this.props.search_text) return true;
+
+    let textContains = (text1, text2) => {
+      return text1.toLowerCase().indexOf(text2.toLowerCase()) > -1
+    }
+    let tagNames = document.tags.map((tag) => { return tag.name });
+    return [document.title].concat(tagNames).some((text) => {
+      return textContains(text, this.props.search_text);
+    })
   }
 
   render() {
@@ -27,7 +34,7 @@ class DocumentList extends Component {
         </div>
         {
           this.props.documents
-            .filter((document) => this.documentTitleMatchSearchText(document.title))
+            .filter((document) => this.filterByTitleAndTags(document))
             .map((document) =>
             <DocumentBlock
               key={document.id}
