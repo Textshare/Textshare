@@ -1,6 +1,6 @@
 defmodule Textshare.Document do
   use Textshare.Web, :model
-  @derive {Poison.Encoder, only: [:id, :title, :content, :row_ids]}
+  @derive {Poison.Encoder, only: [:id, :title, :content, :row_ids, :inserted_at, :updated_at]}
 
   schema "documents" do
     field :title, :string

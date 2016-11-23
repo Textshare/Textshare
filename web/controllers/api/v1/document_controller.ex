@@ -6,18 +6,17 @@ defmodule Textshare.DocumentController do
 
   def index(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
-    documents = current_user
-      |> Ecto.assoc(:documents)
-      |> Repo.all
+    current_users_documents = current_user
+      |> Repo.preload([{:documents, [:tags, :owner]}])
 
     conn
     |> put_status(:ok)
-    |> render("index.json", documents: documents)
+    |> render("index.json", documents: current_users_documents.documents)
   end
 
   def show(conn, %{"id" => document_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, document_id)
+    document = Repo.get!(Document, document_id) |> Repo.preload([:tags, :owner])
 
     if current_user.id == document.user_id do
       conn
@@ -38,6 +37,7 @@ defmodule Textshare.DocumentController do
 
     case Repo.insert(changeset) do
       {:ok, document} ->
+        document = Repo.preload(document, [:tags, :owner])
         conn
         |> put_status(:created)
         |> render("show.json", document: document )
@@ -59,6 +59,7 @@ defmodule Textshare.DocumentController do
 
       case Repo.update(changeset) do
         {:ok, document} ->
+          document = Repo.preload(document, [:tags, :owner])
           conn
           |> put_status(:ok)
           |> render("show.json", document: document )
@@ -76,7 +77,7 @@ defmodule Textshare.DocumentController do
 
   def delete(conn, %{"id" => document_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, document_id)
+    document = Repo.get!(Document, document_id) |> Repo.preload([:tags, :owner])
 
     if current_user.id == document.user_id do
       case Repo.delete(document) do

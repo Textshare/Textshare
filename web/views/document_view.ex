@@ -2,11 +2,20 @@ defmodule Textshare.DocumentView do
   use Textshare.Web, :view
 
   def render("index.json", %{documents: documents}) do
-    documents
+    render_many(documents, __MODULE__, "show.json", as: :document)
   end
 
   def render("show.json", %{document: document}) do
-    document
+    %{
+      id: document.id,
+      title: document.title,
+      content: document.content,
+      row_ids: document.row_ids,
+      inserted_at: document.inserted_at,
+      updated_at: document.updated_at,
+      owner: render_one(document.owner, Textshare.CurrentUserView, "show.json", as: :user),
+      tags: render_many(document.tags, Textshare.TagView, "show.json", as: :tag)
+    }
   end
 
   def render("delete.json", %{document: document}) do
