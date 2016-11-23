@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import * as DocumentsActions from "redux/actions/documents"
 import DocumentBlock from "components/DocumentBlock"
 import "./DocumentList.scss"
+import moment from "moment"
 
 class DocumentList extends Component {
   componentWillMount() {
@@ -35,6 +36,13 @@ class DocumentList extends Component {
         {
           this.props.documents
             .filter((document) => this.filterByTitleAndTags(document))
+            .sort((document1, document2) => {
+              if (moment(document1.updated_at).isBefore(moment(document2.updated_at))) {
+                return 1;
+              } else {
+                return -1;
+              }
+            })
             .map((document) =>
             <DocumentBlock
               key={document.id}
