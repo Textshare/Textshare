@@ -19,6 +19,7 @@ class TagList extends Component {
     return (
       <div>
         <ReactTags
+          autofocus={false}
           tags={this.props.tags}
           suggestions={[]}
           labelField={"name"}
