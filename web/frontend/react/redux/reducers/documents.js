@@ -64,6 +64,11 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
+    case "SET_CUR_POS": {
+        const newDocument = Object.assign({}, state[action.documentId], { line: action.line, ch: action.ch })
+        return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
     default:
       return state
   }
