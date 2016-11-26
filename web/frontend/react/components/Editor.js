@@ -41,6 +41,9 @@ class Editor extends Component {
         <div className="codemirror-container">
           <textarea ref="codemirror"></textarea>
         </div>
+        <div>
+            {this.props.editedDocument.line}:{this.props.editedDocument.ch}
+        </div>
       </div>
     )
   }
@@ -106,6 +109,15 @@ class Editor extends Component {
           }
         })
       }
+    })
+
+    this.codeMirror.on("cursorActivity", (doc) => {
+        let pos = doc.getCursor()
+        this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
+    })
+
+    this.codeMirror.on("blur", (doc) => {
+        this.props.setCursorPosition(this.props.documentId, 0, 0)
     })
   }
 
