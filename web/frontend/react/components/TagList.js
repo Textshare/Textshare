@@ -23,6 +23,7 @@ class TagList extends Component {
           tags={this.props.tags}
           suggestions={[]}
           labelField={"name"}
+          readOnly={this.props.readOnly}
           handleDelete={this._handleDelete}
           handleAddition={this._handleAddition}
         ></ReactTags>
@@ -35,7 +36,8 @@ class TagList extends Component {
 function mapStateToProps(state, ownProps) {
   let tagIds = state.documents[ownProps.documentId].tagIds || []
   return {
-    tags: tagIds.map((key) => state.tags[key])
+    tags: tagIds.map((key) => state.tags[key]),
+    readOnly: state.documents[ownProps.documentId].owner.id != state.session.currentUser.id
   }
 }
 

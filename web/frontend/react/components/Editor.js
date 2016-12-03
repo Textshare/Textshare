@@ -51,7 +51,8 @@ class Editor extends Component {
   componentDidMount() {
     this.token = UUID.create().hex
 
-    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
+    const readOnly = this.props.current_user_id != this.props.editedDocument.owner.id
+    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror), {readOnly: readOnly})
     this.codeMirror.setValue(this.props.editedDocument.content || "")
 
     this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
@@ -140,6 +141,7 @@ function mapStateToProps(state, props) {
   return {
     editedDocument: state.documents[props.documentId],
     socket: state.session.socket,
+    current_user_id: state.session.currentUser.id
   }
 }
 
