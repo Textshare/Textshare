@@ -6,19 +6,22 @@ defmodule Textshare.DocumentController do
 
   def index(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
-    current_users_documents = current_user
-      |> Repo.preload([{:documents, [:revision, :tags, :owner]}])
+
+    current_user =
+      current_user
+      |> Repo.preload([{:own_documents, [:tags, :owner, :revision]}, {:shared_documents, [:tags, :owner, :revision]}])
 
     conn
     |> put_status(:ok)
-    |> render("index.json", documents: current_users_documents.documents)
+    |> render("index.json", documents: current_user.own_documents ++ current_user.shared_documents)
   end
 
   def show(conn, %{"id" => document_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, document_id) |> Repo.preload([:revision, :tags, :owner])
 
-    if current_user.id == document.user_id do
+    document = Repo.get!(Document, document_id) |> Repo.preload([:tags, :owner, :collaborators, :revision])
+
+    if Enum.member?([document.owner | document.collaborators], current_user) do
       conn
       |> put_status(:ok)
       |> render("show.json", document: document )
@@ -74,9 +77,9 @@ defmodule Textshare.DocumentController do
     end
   end
 
-  def update(conn, params) do
+  def update(conn, %{"id" => id} = params) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, Map.get(params, "id"))
+    document = Repo.get!(Document, id)
 
     if current_user.id == document.user_id do
       document_changeset = Document.changeset(document, params)
@@ -89,7 +92,7 @@ defmodule Textshare.DocumentController do
           )
 
           case Repo.update(revision_changeset) do
-            {:ok, revision} ->
+            {:ok, _revision} ->
               document = Repo.preload(document, [:revision, :tags, :owner])
               conn
               |> put_status(:ok)

@@ -48,6 +48,7 @@ class DocumentList extends Component {
               key={document.id}
               document={document}
               removeDocument={this.props.removeDocument}
+              canRemove={document.owner.id == this.props.current_user_id}
             ></DocumentBlock>
           )
         }
@@ -60,6 +61,7 @@ function mapStateToProps(state) {
   return {
     documents: Object.keys(state.documents).map((key) => state.documents[key]),
     search_text: state.search.text,
+    current_user_id: state.session.currentUser.id
   }
 }
 

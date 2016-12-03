@@ -8,7 +8,7 @@ defmodule Textshare.User do
     field :encrypted_password, :string
     field :password, :string, virtual: true
 
-    has_many :documents, Textshare.Document
+    has_many :own_documents, Textshare.Document
     has_many :sharings, Textshare.Sharing
     has_many :shared_documents, through: [:sharings, :document]
 

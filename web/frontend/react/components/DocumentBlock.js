@@ -8,6 +8,14 @@ class DocumentBlock extends Component {
   removeDocument = () => { this.props.removeDocument(this.props.document) }
   formatDate = (date) => { return moment(date).format("YYYY-MM-DD HH:mm:ss") }
 
+  removeButton = (canRemove) => {
+    if (canRemove) {
+      return <div className="remove-button">X</div>;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <div className="document-block">
@@ -32,7 +40,7 @@ class DocumentBlock extends Component {
             </Link>
           </div>
           <div className="col-xs-1" onClick={this.removeDocument}>
-            <div className="remove-button">X</div>
+            {this.removeButton(this.props.canRemove)}
           </div>
         </div>
         <div className="document-block-content" style={{ clear: "both" }}>
