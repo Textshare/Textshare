@@ -9,7 +9,7 @@ defmodule Textshare.Sharing do
     timestamps
   end
 
-  @required_fields ~w(permission user_id document_id)
+  @required_fields ~w(user_id document_id)
   @optional_fields ~w()
 
   @doc """

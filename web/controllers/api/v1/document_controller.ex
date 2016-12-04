@@ -36,7 +36,7 @@ defmodule Textshare.DocumentController do
     current_user = Guardian.Plug.current_resource(conn)
 
     document_changeset = current_user
-      |> Ecto.build_assoc(:documents)
+      |> Ecto.build_assoc(:own_documents)
       |> Document.changeset(document_params)
 
     case Repo.insert(document_changeset) do

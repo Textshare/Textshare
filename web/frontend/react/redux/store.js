@@ -7,6 +7,9 @@ import sessionReducer from "./reducers/session";
 import documentsReducer from "./reducers/documents";
 import searchReducer from "./reducers/search";
 import tagsReducer from "./reducers/tags";
+import collaboratorsReducer from "./reducers/collaborators";
+import possibleCollaboratorsReducer from "./reducers/possibleCollaborators";
+
 
 export default function createStore() {
   const middleware = [thunkMiddleware]
@@ -17,6 +20,8 @@ export default function createStore() {
     session: sessionReducer,
     search: searchReducer,
     tags: tagsReducer,
+    collaborators: collaboratorsReducer,
+    possibleCollaborators: possibleCollaboratorsReducer,
   })
   // const enhancer = compose(applyMiddleware(...middleware), DevTools.instrument());
   const enhancer = compose(applyMiddleware(...middleware));

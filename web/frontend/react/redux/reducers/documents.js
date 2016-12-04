@@ -46,6 +46,22 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
+    case "RESPONSE_COLLABORATORS": {
+      const newDocument = Object.assign({},
+        state[action.documentId],
+        { collaboratorsIds: action.data.map((collaborator) => { return collaborator.id }) }
+      )
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
+    case "RESPONSE_POSSIBLE_COLLABORATORS": {
+      const newDocument = Object.assign({},
+        state[action.documentId],
+        { possibleCollaboratorsIds: action.data.map((collaborator) => { return collaborator.id }) }
+      )
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
     case "RESPONSE_TAG": {
       const newDocument = Object.assign({},
         state[action.documentId],
