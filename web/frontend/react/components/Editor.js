@@ -140,6 +140,7 @@ function mapStateToProps(state, props) {
   return {
     editedDocument: state.documents[props.documentId],
     socket: state.session.socket,
+    current_user_id: state.session.currentUser.id
   }
 }
 

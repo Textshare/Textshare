@@ -6,9 +6,9 @@ defmodule Textshare.TagController do
 
   def index(conn, %{"document_id" => document_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, document_id) |> Repo.preload(:tags)
+    document = Repo.get!(Document, document_id) |> Repo.preload([:tags, :owner, :collaborators])
 
-    if current_user.id == document.user_id do
+    if Enum.member?([document.owner | document.collaborators], current_user) do
       conn
       |> put_status(:ok)
       |> render("index.json", tags: document.tags )

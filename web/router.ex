@@ -33,6 +33,9 @@ defmodule Textshare.Router do
 
       get "/documents/:document_id/revisions", RevisionController, :index
       post "/documents/:document_id/revisions", RevisionController, :create
+      get "/documents/:document_id/collaborators", CollaboratorController, :index
+      get "/documents/:document_id/possible_collaborators", CollaboratorController, :possible
+      post "/documents/:document_id/set_collaborators", CollaboratorController, :set
     end
   end
 
