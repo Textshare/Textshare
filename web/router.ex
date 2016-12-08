@@ -30,6 +30,9 @@ defmodule Textshare.Router do
       get "/documents/:document_id/tags", TagController, :index
       post "/documents/:document_id/tags", TagController, :create
       delete "/documents/:document_id/tags/:tag_id", TagController, :delete
+
+      get "/documents/:document_id/revisions", RevisionController, :index
+      post "/documents/:document_id/revisions", RevisionController, :create
     end
   end
 

@@ -83,7 +83,7 @@ defmodule Textshare.DocumentController do
 
       case Repo.update(document_changeset) do
         {:ok, document} ->
-          revision = Repo.get!(Revision, document.id)
+          revision = Repo.get!(Revision, document.revision_id)
           revision_changeset = Revision.changeset(
             revision, %{content: params["content"], row_ids: params["row_ids"]}
           )
