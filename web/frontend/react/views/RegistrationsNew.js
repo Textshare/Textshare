@@ -2,9 +2,24 @@ import React, { PropTypes } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import { renderErrorsFor } from "../utils";
-import Actions from "redux/actions/registrations";
+import RegistrationActions from "redux/actions/registrations";
+import SessionActions from "redux/actions/sessions"
+
 
 class RegistrationsNew extends React.Component {
+  componentDidMount() {
+    const { dispatch, currentUser } = this.props;
+    const phoenixAuthToken = localStorage.getItem("phoenixAuthToken");
+
+    if (phoenixAuthToken && !currentUser) {
+      dispatch(SessionActions.currentUser());
+    } else if (!phoenixAuthToken) {
+      browserHistory.push("/sign_in");
+    } else {
+      browserHistory.push("/docs");
+    }
+  }
+
   _handleSubmit(e) {
     e.preventDefault();
 
@@ -17,8 +32,9 @@ class RegistrationsNew extends React.Component {
       password_confirmation: this.refs.passwordConfirmation.value,
     };
 
-    dispatch(Actions.signUp(data));
+    dispatch(RegistrationActions.signUp(data));
   }
+
 
   render() {
     const { errors } = this.props;
@@ -69,6 +85,7 @@ class RegistrationsNew extends React.Component {
 
 const mapStateToProps = (state) => ({
   errors: state.registration.errors,
+  currentUser: state.session.currentUser,
 });
 
 export default connect(mapStateToProps)(RegistrationsNew);

@@ -25,6 +25,7 @@ export default function documentsReducer(state = initialState, action) {
     }
 
     case "RESPONSE_DOCUMENTS": {
+      state = initialState
       const normalizedDocuments = action.data.reduce((acc, doc) => {
         return Object.assign(acc, { [doc.id]: doc })
       }, {})

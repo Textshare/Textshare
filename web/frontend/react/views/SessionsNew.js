@@ -6,6 +6,19 @@ import Actions from "redux/actions/sessions";
 import "./SessionsNew.scss"
 
 class SessionsNew extends React.Component {
+  componentDidMount() {
+    const { dispatch, currentUser } = this.props;
+    const phoenixAuthToken = localStorage.getItem("phoenixAuthToken");
+
+    if (phoenixAuthToken && !currentUser) {
+      dispatch(Actions.currentUser());
+    } else if (!phoenixAuthToken) {
+      browserHistory.push("/sign_in");
+    } else {
+      browserHistory.push("/docs");
+    }
+  }
+
   _handleSubmit(e) {
     e.preventDefault();
 
@@ -55,8 +68,9 @@ class SessionsNew extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => (
-  state.session
-);
+const mapStateToProps = (state) => ({
+  session: state.session,
+  currentUser: state.session.currentUser
+})
 
 export default connect(mapStateToProps)(SessionsNew);
