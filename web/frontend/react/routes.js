@@ -1,6 +1,6 @@
 import React from "react";
 import { IndexRoute, Route } from "react-router";
-import { DocumentsView, DocumentView, RegistrationsNew, SessionsNew } from "views";
+import { DocumentsView, DocumentView, RegistrationsNew, SessionsNew, RevisionsView } from "views";
 import AuthenticatedContainer from "containers/authenticated";
 
 export default () => {
@@ -9,6 +9,7 @@ export default () => {
     <Route path="/" component={AuthenticatedContainer}>
       <Route path="/docs" component={DocumentsView}></Route>
       <Route path="/docs/:documentId" component={DocumentView}></Route>
+      <Route path="/docs/:documentId/revisions" component={RevisionsView}></Route>
     </Route>
     <Route path="/sign_up" component={RegistrationsNew}></Route>
     <Route path="/sign_in" component={SessionsNew}></Route>

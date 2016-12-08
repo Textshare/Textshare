@@ -9,8 +9,8 @@ defmodule Textshare.DocumentView do
     %{
       id: document.id,
       title: document.title,
-      content: document.content,
-      row_ids: document.row_ids,
+      content: document.revision.content,
+      row_ids: document.revision.row_ids,
       inserted_at: document.inserted_at,
       updated_at: document.updated_at,
       owner: render_one(document.owner, Textshare.CurrentUserView, "show.json", as: :user),

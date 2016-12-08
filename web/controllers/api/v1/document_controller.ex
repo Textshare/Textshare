@@ -1,13 +1,13 @@
 defmodule Textshare.DocumentController do
   use Textshare.Web, :controller
-  alias Textshare.Document
+  alias Textshare.{Document, Revision}
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Textshare.SessionController
 
   def index(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
     current_users_documents = current_user
-      |> Repo.preload([{:documents, [:tags, :owner]}])
+      |> Repo.preload([{:documents, [:revision, :tags, :owner]}])
 
     conn
     |> put_status(:ok)
@@ -16,7 +16,7 @@ defmodule Textshare.DocumentController do
 
   def show(conn, %{"id" => document_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, document_id) |> Repo.preload([:tags, :owner])
+    document = Repo.get!(Document, document_id) |> Repo.preload([:revision, :tags, :owner])
 
     if current_user.id == document.user_id do
       conn
@@ -31,16 +31,42 @@ defmodule Textshare.DocumentController do
 
   def create(conn, %{"document" => document_params}) do
     current_user = Guardian.Plug.current_resource(conn)
-    changeset = current_user
+
+    document_changeset = current_user
       |> Ecto.build_assoc(:documents)
       |> Document.changeset(document_params)
 
-    case Repo.insert(changeset) do
+    case Repo.insert(document_changeset) do
       {:ok, document} ->
-        document = Repo.preload(document, [:tags, :owner])
-        conn
-        |> put_status(:created)
-        |> render("show.json", document: document )
+        revision_changeset = document
+          |> Ecto.build_assoc(:revisions)
+          |> Revision.changeset(
+              %{content: document_params["content"], row_ids: document_params["row_ids"]}
+            )
+
+        case Repo.insert(revision_changeset) do
+          {:ok, revision} ->
+            changeset = Document.changeset(document, %{revision_id: revision.id})
+
+            case Repo.update(changeset) do
+              {:ok, document} ->
+                document = Repo.preload(document, [:revision, :tags, :owner])
+                conn
+                |> put_status(:created)
+                |> render("show.json", document: document )
+
+              {:error, changeset} ->
+                conn
+                |> put_status(:unprocessable_entity)
+                |> render("error.json", changeset: changeset)
+            end
+
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render("error.json", changeset: changeset)
+        end
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -53,16 +79,28 @@ defmodule Textshare.DocumentController do
     document = Repo.get!(Document, Map.get(params, "id"))
 
     if current_user.id == document.user_id do
-      changeset = Document.changeset(
-        document, params
-      )
+      document_changeset = Document.changeset(document, params)
 
-      case Repo.update(changeset) do
+      case Repo.update(document_changeset) do
         {:ok, document} ->
-          document = Repo.preload(document, [:tags, :owner])
-          conn
-          |> put_status(:ok)
-          |> render("show.json", document: document )
+          revision = Repo.get!(Revision, document.revision_id)
+          revision_changeset = Revision.changeset(
+            revision, %{content: params["content"], row_ids: params["row_ids"]}
+          )
+
+          case Repo.update(revision_changeset) do
+            {:ok, revision} ->
+              document = Repo.preload(document, [:revision, :tags, :owner])
+              conn
+              |> put_status(:ok)
+              |> render("show.json", document: document )
+
+            {:error, changeset} ->
+              conn
+              |> put_status(:unprocessable_entity)
+              |> render("error.json", changeset: changeset)
+          end
+
         {:error, changeset} ->
           conn
           |> put_status(:unprocessable_entity)
