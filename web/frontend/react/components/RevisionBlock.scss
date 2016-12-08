@@ -21,3 +21,11 @@
   overflow: hidden;
   max-height: calc(100% - 52px);
 }
+
+.revision-block-red-diff {
+  background: red;
+}
+
+.revision-block-green-diff {
+  background: green;
+}

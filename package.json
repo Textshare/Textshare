@@ -26,6 +26,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "codemirror": "^5.19.0",
+    "diff-match-patch": "^1.0.0",
     "es6-promise": "^3.1.2",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^2.2.3",

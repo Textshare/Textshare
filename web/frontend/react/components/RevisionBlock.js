@@ -16,13 +16,23 @@ class RevisionBlock extends Component {
               {
                 this.props.first ?
                   "Current revision" :
-                  "Created at: " + this.formatDate(this.props.revision.inserted_at)
+                  "Created at: " + this.formatDate(this.props.revisionDiff.inserted_at)
               }
             </span>
           </div>
         </div>
         <div className="revision-block-content" style={{ clear: "both" }}>
-          {this.props.revision.content}
+          {
+            this.props.revisionDiff.contentDiff.map((diff, index) => {
+              if (diff[0] == 0) {
+                return <span key={index}>{diff[1]}</span>
+              } else if (diff[0] == -1) {
+                return <span className="revision-block-red-diff" key={index}>{diff[1]}</span>
+              } else if (diff[0] == 1) {
+                return <span className="revision-block-green-diff" key={index}>{diff[1]}</span>
+              }
+            })
+          }
         </div>
       </div>
     )
