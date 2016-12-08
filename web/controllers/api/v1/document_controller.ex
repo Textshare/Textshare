@@ -79,9 +79,9 @@ defmodule Textshare.DocumentController do
 
   def update(conn, %{"id" => id} = params) do
     current_user = Guardian.Plug.current_resource(conn)
-    document = Repo.get!(Document, id)
+    document = Repo.get!(Document, id) |> Repo.preload([:collaborators])
 
-    if current_user.id == document.user_id do
+    if Enum.member?([document.owner | document.collaborators], current_user) do
       document_changeset = Document.changeset(document, params)
 
       case Repo.update(document_changeset) do

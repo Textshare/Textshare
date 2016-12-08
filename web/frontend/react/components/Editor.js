@@ -51,8 +51,7 @@ class Editor extends Component {
   componentDidMount() {
     this.token = UUID.create().hex
 
-    const readOnly = this.props.current_user_id != this.props.editedDocument.owner.id
-    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror), {readOnly: readOnly})
+    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
     this.codeMirror.setValue(this.props.editedDocument.content || "")
 
     this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
