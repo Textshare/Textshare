@@ -74,7 +74,7 @@ class Editor extends Component {
           newRowIds.splice(change.from.line + 1, 0, ...payload.body.additionalRowIds)
         }
 
-        this._onContentChange(this.codeMirror.getValue(), newRowIds)
+        this.props.setRowIds(this.props.documentId, newRowIds)
       }
     })
     this.channel.join()
@@ -82,6 +82,10 @@ class Editor extends Component {
       .receive("error", resp => { console.log("Unable to join", resp) })
 
     this.codeMirror.on("change", (cm, change) => {
+      if (change.origin !== "setValue") {
+        this.props.setContent(this.props.documentId, cm.getValue())
+      }
+
       if (change.origin !== "setValue" && change.origin !== "sync") {
         const newRowCount = cm.lineCount()
         const targetRowId = this.props.editedDocument.row_ids[change.from.line]
