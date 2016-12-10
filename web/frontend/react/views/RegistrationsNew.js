@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { renderErrorsFor } from "../utils";
 import RegistrationActions from "redux/actions/registrations";
 import SessionActions from "redux/actions/sessions"
+import { browserHistory } from "react-router"
 
 
 class RegistrationsNew extends React.Component {
@@ -11,14 +12,25 @@ class RegistrationsNew extends React.Component {
     const { dispatch, currentUser } = this.props;
     const phoenixAuthToken = localStorage.getItem("phoenixAuthToken");
 
-    if (phoenixAuthToken && !currentUser) {
-      dispatch(SessionActions.currentUser());
-    } else if (!phoenixAuthToken) {
-      browserHistory.push("/sign_in");
-    } else {
+    if (phoenixAuthToken && currentUser) {
       browserHistory.push("/docs");
+    } else if (phoenixAuthToken) {
+      dispatch(SessionActions.currentUser());
     }
   }
+
+  // componentDidMount() {
+  //   const { dispatch, currentUser } = this.props;
+  //   const phoenixAuthToken = localStorage.getItem("phoenixAuthToken");
+  //
+  //   if (phoenixAuthToken && !currentUser) {
+  //     dispatch(SessionActions.currentUser());
+  //   } else if (!phoenixAuthToken) {
+  //     browserHistory.push("/sign_in");
+  //   } else {
+  //     browserHistory.push("/docs");
+  //   }
+  // }
 
   _handleSubmit(e) {
     e.preventDefault();

@@ -4,20 +4,26 @@ import { Link } from "react-router";
 import { renderErrorsFor } from "utils";
 import Actions from "redux/actions/sessions";
 import "./SessionsNew.scss"
+import { browserHistory } from "react-router"
 
 class SessionsNew extends React.Component {
   componentDidMount() {
     const { dispatch, currentUser } = this.props;
     const phoenixAuthToken = localStorage.getItem("phoenixAuthToken");
 
-    if (phoenixAuthToken && !currentUser) {
-      dispatch(Actions.currentUser());
-    } else if (!phoenixAuthToken) {
-      browserHistory.push("/sign_in");
-    } else {
+    if (phoenixAuthToken && currentUser) {
       browserHistory.push("/docs");
-    }
+    } else if (phoenixAuthToken) {
+      dispatch(Actions.currentUser());
+    };
   }
+      //
+ // } else if (!phoenixAuthToken) {
+  //     browserHistory.push("/sign_in");
+  //   } else {
+  //     browserHistory.push("/docs");
+  //   }
+  // }
 
   _handleSubmit(e) {
     e.preventDefault();
