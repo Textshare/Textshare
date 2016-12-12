@@ -52,7 +52,9 @@ class Editor extends Component {
   componentDidMount() {
     this.token = UUID.create().hex
 
-    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
+    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror), {
+      viewportMargin: Infinity
+    })
     this.codeMirror.setValue(this.props.editedDocument.content || "")
 
     this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
