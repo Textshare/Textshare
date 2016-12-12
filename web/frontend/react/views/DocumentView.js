@@ -11,6 +11,7 @@ import { httpPost, httpGet } from "utils"
 import Collaborators from "components/Collaborators"
 import Modal from "react-modal"
 import Select from "react-select"
+import UUID from "uuid-js"
 
 class DocumentView extends Component {
   modalStyles = {
@@ -70,8 +71,11 @@ class DocumentView extends Component {
     } else {
       let newContent = this.props.editedDocument.content + "\n" +
         this.state.selectedDocumentToAppend.content
-      let newRowIds = this.props.editedDocument.row_ids
-        .concat(this.state.selectedDocumentToAppend.row_ids)
+      let newRowIds = this.props.editedDocument.row_ids.concat(
+        this.state.selectedDocumentToAppend.row_ids.map((_row_id) => {
+          return UUID.create().hex
+        })
+      )
 
       this.props.setContent(this.props.params.documentId, newContent)
       this.props.setRowIds(this.props.params.documentId, newRowIds)
