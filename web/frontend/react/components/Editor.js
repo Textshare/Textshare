@@ -12,6 +12,7 @@ import "codemirror/lib/codemirror.css"
 class Editor extends Component {
   componentWillMount() {
     this.props.getDocument(this.props.documentId)
+    this.props.setCursorPosition(this.props.documentId, 0, 0)
   }
 
   updateDocument = () => {
@@ -116,12 +117,12 @@ class Editor extends Component {
     })
 
     this.codeMirror.on("cursorActivity", (doc) => {
-        let pos = doc.getCursor()
-        this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
+      let pos = doc.getCursor()
+      this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
     })
 
     this.codeMirror.on("blur", (doc) => {
-        this.props.setCursorPosition(this.props.documentId, 0, 0)
+      this.props.setCursorPosition(this.props.documentId, 0, 0)
     })
   }
 
