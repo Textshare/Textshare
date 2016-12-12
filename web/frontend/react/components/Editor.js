@@ -124,6 +124,11 @@ class Editor extends Component {
     this.codeMirror.on("blur", (doc) => {
       this.props.setCursorPosition(this.props.documentId, 0, 0)
     })
+
+    this.codeMirror.on("focus", (doc) => {
+      let pos = doc.getCursor()
+      this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
+    })
   }
 
   componentWillReceiveProps(nextProps) {
