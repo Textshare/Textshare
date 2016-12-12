@@ -4,7 +4,7 @@ import { browserHistory } from "react-router"
 
 function initialDocumentState() {
   const rowUuid = UUID.create().hex
-  return { title: "New document", content: " ", row_ids: [rowUuid] }
+  return { title: "New document", content: "", row_ids: [rowUuid] }
 }
 
 export function addDocument() { return (dispatch) => {
