@@ -25,6 +25,7 @@ export default function documentsReducer(state = initialState, action) {
     }
 
     case "RESPONSE_DOCUMENT": {
+      if (action.data.content === null) action.data.content = "";
       const newDocument = Object.assign({}, state[action.data.id] || {}, action.data)
       return Object.assign({}, state, { [action.data.id]: newDocument })
     }
@@ -32,6 +33,7 @@ export default function documentsReducer(state = initialState, action) {
     case "RESPONSE_DOCUMENTS": {
       state = initialState
       const normalizedDocuments = action.data.reduce((acc, doc) => {
+        if (doc.content === null) doc.content = "";
         return Object.assign(acc, { [doc.id]: doc })
       }, {})
       return Object.assign({}, state, normalizedDocuments)

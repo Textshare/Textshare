@@ -23,7 +23,7 @@ defmodule Textshare.CollaboratorController do
     current_user = current_user(conn)
     document = document(document_id)
 
-    collaborators_ids = String.split(collaborators_ids, ",")
+    collaborators_ids = String.split(collaborators_ids, ",") |> Enum.filter(fn x -> x != "" end)
 
     if has_access?(current_user, document) do
       q = from s in Sharing, where: s.document_id == ^document_id
