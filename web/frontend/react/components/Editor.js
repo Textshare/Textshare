@@ -12,6 +12,7 @@ import "codemirror/lib/codemirror.css"
 class Editor extends Component {
   componentWillMount() {
     this.props.getDocument(this.props.documentId)
+    this.props.setCursorPosition(this.props.documentId, 0, 0)
   }
 
   updateDocument = () => {
@@ -51,7 +52,9 @@ class Editor extends Component {
   componentDidMount() {
     this.token = UUID.create().hex
 
-    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror))
+    this.codeMirror = CodeMirror.fromTextArea(findDOMNode(this.refs.codemirror), {
+      viewportMargin: Infinity
+    })
     this.codeMirror.setValue(this.props.editedDocument.content || "")
 
     this.channel = this.props.socket.channel("document:" + this.props.editedDocument.id, {})
@@ -116,12 +119,17 @@ class Editor extends Component {
     })
 
     this.codeMirror.on("cursorActivity", (doc) => {
-        let pos = doc.getCursor()
-        this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
+      let pos = doc.getCursor()
+      this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
     })
 
     this.codeMirror.on("blur", (doc) => {
-        this.props.setCursorPosition(this.props.documentId, 0, 0)
+      this.props.setCursorPosition(this.props.documentId, 0, 0)
+    })
+
+    this.codeMirror.on("focus", (doc) => {
+      let pos = doc.getCursor()
+      this.props.setCursorPosition(this.props.documentId, pos.line, pos.ch)
     })
   }
 
