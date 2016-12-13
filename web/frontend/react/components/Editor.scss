@@ -18,6 +18,14 @@
   width: 100%;
 }
 
+.editor-stats-item {
+  margin-left: 10px;
+}
+
+.editor-stats-label-over-limit {
+  color: red;
+}
+
 .CodeMirror {
   height: auto !important;
 }

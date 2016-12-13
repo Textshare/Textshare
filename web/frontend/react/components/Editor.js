@@ -28,6 +28,30 @@ class Editor extends Component {
     this.props.setRowIds(this.props.documentId, newRowIds)
   }
 
+  computeCharLimitClass = () => {
+    let limit = this.props.editedDocument.limit
+    if (limit) {
+      let currentCount = this.props.editedDocument.content.length
+      if (currentCount > limit) {
+        return "editor-stats-label-over-limit"
+      } else {
+        return ""
+      }
+    } else {
+      return ""
+    }
+  }
+
+  computeCharLimitLabel = () => {
+    let limit = this.props.editedDocument.limit
+    if (limit) {
+      let currentCount = this.props.editedDocument.content.length
+      return currentCount + "/" + limit
+    } else {
+      return ""
+    }
+  }
+
   render() {
     return (
       <div className="editor">
@@ -43,7 +67,12 @@ class Editor extends Component {
           <textarea ref="codemirror"></textarea>
         </div>
         <div>
+          <span className="editor-stats-item">
             {this.props.editedDocument.line}:{this.props.editedDocument.ch}
+          </span>
+          <span className={"editor-stats-item " + this.computeCharLimitClass()}>
+            {this.computeCharLimitLabel()}
+          </span>
         </div>
       </div>
     )
