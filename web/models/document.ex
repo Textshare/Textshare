@@ -1,9 +1,10 @@
 defmodule Textshare.Document do
   use Textshare.Web, :model
-  @derive {Poison.Encoder, only: [:id, :title, :inserted_at, :updated_at]}
+  @derive {Poison.Encoder, only: [:id, :title, :inserted_at, :updated_at, :limit]}
 
   schema "documents" do
     field :title, :string
+    field :limit, :integer
 
     belongs_to :owner, {"users", Textshare.User}, foreign_key: :user_id
     belongs_to :revision, {"revisions", Textshare.Revision}, foreign_key: :revision_id
@@ -29,5 +30,6 @@ defmodule Textshare.Document do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_length(:title, min: 1)
+    |> validate_number(:limit, greater_than: 0)
   end
 end
