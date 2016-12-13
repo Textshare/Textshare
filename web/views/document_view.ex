@@ -9,6 +9,7 @@ defmodule Textshare.DocumentView do
     %{
       id: document.id,
       title: document.title,
+      limit: document.limit,
       content: document.revision.content,
       row_ids: document.revision.row_ids,
       inserted_at: document.inserted_at,

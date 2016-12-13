@@ -19,6 +19,11 @@ export default function documentsReducer(state = initialState, action) {
       return Object.assign({}, state, { [action.documentId]: newDocument })
     }
 
+    case "SET_LIMIT": {
+      const newDocument = Object.assign({}, state[action.documentId], { limit: action.limit })
+      return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
     case "RESPONSE_DOCUMENT": {
       const newDocument = Object.assign({}, state[action.data.id] || {}, action.data)
       return Object.assign({}, state, { [action.data.id]: newDocument })
