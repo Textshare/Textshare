@@ -1,6 +1,5 @@
 import { httpGet, httpPost, httpPut, httpDelete } from "utils"
 import UUID from "uuid-js"
-import { browserHistory } from "react-router"
 
 function initialDocumentState() {
   const rowUuid = UUID.create().hex
@@ -8,10 +7,10 @@ function initialDocumentState() {
 }
 
 export function addDocument() { return (dispatch) => {
-  httpPost("/api/v1/documents", { document: initialDocumentState() })
+  return httpPost("/api/v1/documents", { document: initialDocumentState() })
     .then(function(data) {
       dispatch({ type: "RESPONSE_DOCUMENT", data: data })
-      browserHistory.push("/docs/" + data.id)
+      return data
     })
     .catch(function(error) {
       console.log(error)

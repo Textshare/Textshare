@@ -19,6 +19,15 @@ class RevisionBlock extends Component {
     })
   }
 
+  createDocumentFromRevision = () => {
+    this.props.addDocument().then((doc) => {
+      this.props.setContent(doc.id, this.props.revisionDiff.content)
+      this.props.updateDocument(doc.id).then(() => {
+        browserHistory.push("/docs/" + doc.id)
+      })
+    })
+  }
+
   render() {
     return (
       <div className="revision-block">
@@ -37,6 +46,11 @@ class RevisionBlock extends Component {
                     onClick={this.setRevisionAsCurrentDocumentContent}
                     className="revision-block-metadata-item">
                       Set as current document content
+                  </button>
+                  <button
+                    onClick={this.createDocumentFromRevision}
+                    className="revision-block-metadata-item">
+                      Create new document from revision
                   </button>
                 </span>
             }

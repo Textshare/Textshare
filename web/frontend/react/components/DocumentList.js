@@ -5,6 +5,7 @@ import * as DocumentsActions from "redux/actions/documents"
 import DocumentBlock from "components/DocumentBlock"
 import "./DocumentList.scss"
 import moment from "moment"
+import { browserHistory } from "react-router"
 
 class DocumentList extends Component {
   componentWillMount() {
@@ -12,7 +13,7 @@ class DocumentList extends Component {
   }
 
   newDocument = (_event) => {
-    this.props.addDocument()
+    this.props.addDocument().then(function(data) { browserHistory.push("/docs/" + data.id) })
   }
 
   filterByTitleAndTags = (document) => {
