@@ -18,7 +18,10 @@ class RevisionsView extends Component {
   render() {
     return (
       <div>
-        <RevisionList revisions={this.state.revisions}></RevisionList>
+        <RevisionList
+          revisions={this.state.revisions}
+          documentId={this.props.params.documentId}>
+        </RevisionList>
       </div>
     )
   }

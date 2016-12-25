@@ -30,7 +30,7 @@ export function getDocument(documentId) { return (dispatch) => {
 
 export function updateDocument(documentId) { return (dispatch, getState) => {
   const document = getState().documents[documentId]
-  httpPut("/api/v1/documents/" + documentId, {
+  return httpPut("/api/v1/documents/" + documentId, {
     title: document.title, content: document.content, row_ids: document.row_ids, limit: document.limit
   })
     .then(function(data) {

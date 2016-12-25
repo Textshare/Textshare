@@ -32,10 +32,6 @@ class DocumentView extends Component {
     this.setState({ appendDocumentModalOpen: false, characterLimitModalOpen: false })
   }
 
-  // It seems like it can't be commented out in the render function leaving it here.
-  // It should be later added to render function.
-  // <Link to={"/docs/" + this.props.params.documentId + "/revisions"}>Revisions</Link>
-  // <span onClick={this.createRevision}>Create revision</span>
 
   render() {
     return (
@@ -54,8 +50,12 @@ class DocumentView extends Component {
 
         <Collaborators documentId={this.props.params.documentId}></Collaborators>
         <TagList documentId={this.props.params.documentId}></TagList>
-        <span onClick={this.openAppendDocumentModal}>Append document</span>
-        <span onClick={this.openCharacterLimitModal}>Set character limit</span>
+        <button onClick={this.openAppendDocumentModal}>Append document</button>
+        <button onClick={this.openCharacterLimitModal}>Set character limit</button>
+        <button>
+          <Link to={"/docs/" + this.props.params.documentId + "/revisions"}>Revisions</Link>
+        </button>
+        <button onClick={this.createRevision}>Create revision</button>
         <Editor documentId={this.props.params.documentId}></Editor>
       </div>
     )

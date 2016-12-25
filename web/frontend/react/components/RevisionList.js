@@ -33,7 +33,9 @@ class RevisionList extends Component {
             return <RevisionBlock
                       revisionDiff={revisionDiff}
                       key={revisionDiff.id}
-                      first={index == 0}>
+                      first={index == 0}
+                      documentId={this.props.documentId}
+                      >
                     </RevisionBlock>
           })
         }
