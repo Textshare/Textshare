@@ -3,6 +3,7 @@ import { Component } from "react"
 import { Link } from "react-router"
 import "./DocumentBlock.scss"
 import moment from "moment"
+import RemoveDocumentModal from "components/RemoveDocumentModal"
 
 class DocumentBlock extends Component {
   removeDocument = () => { this.props.removeDocument(this.props.document) }
@@ -16,9 +17,26 @@ class DocumentBlock extends Component {
     }
   }
 
+  openRemoveDocumentModal = () => {
+    this.setState({ removeDocumentModalOpen: true })
+  }
+  closeRemoveDocumentModal = () => {
+    this.setState({ removeDocumentModalOpen: false })
+  }
+
+  componentWillMount() {
+    this.setState({ removeDocumentModalOpen: false })
+  }
+
   render() {
     return (
       <div className="document-block">
+        <RemoveDocumentModal
+          confirmRemoveDocument={this.removeDocument}
+          isOpen={this.state.removeDocumentModalOpen}
+          onRequestClose={this.closeRemoveDocumentModal}
+        ></RemoveDocumentModal>
+
         <div>
           <div className="document-block-metadata col-xs-12">
             <span className="document-block-metadata-item">
@@ -39,7 +57,7 @@ class DocumentBlock extends Component {
               {this.props.document.title}
             </Link>
           </div>
-          <div className="col-xs-1" onClick={this.removeDocument}>
+          <div className="col-xs-1" onClick={this.openRemoveDocumentModal}>
             {this.removeButton(this.props.canRemove)}
           </div>
         </div>
