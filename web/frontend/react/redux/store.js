@@ -6,6 +6,7 @@ import registrationReducer from "./reducers/registration";
 import sessionReducer from "./reducers/session";
 import documentsReducer from "./reducers/documents";
 import searchReducer from "./reducers/search";
+import sortReducer from "./reducers/sort";
 import tagsReducer from "./reducers/tags";
 import collaboratorsReducer from "./reducers/collaborators";
 import possibleCollaboratorsReducer from "./reducers/possibleCollaborators";
@@ -19,6 +20,7 @@ export default function createStore() {
     registration: registrationReducer,
     session: sessionReducer,
     search: searchReducer,
+    sort: sortReducer,
     tags: tagsReducer,
     collaborators: collaboratorsReducer,
     possibleCollaborators: possibleCollaboratorsReducer,

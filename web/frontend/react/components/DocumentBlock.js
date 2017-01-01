@@ -1,12 +1,14 @@
 import React from "react"
 import { Component } from "react"
 import { Link } from "react-router"
+import { connect } from "react-redux"
 import "./DocumentBlock.scss"
+import { removeDocument } from "../redux/actions/documents"
 import moment from "moment"
 import RemoveDocumentModal from "components/RemoveDocumentModal"
 
 class DocumentBlock extends Component {
-  removeDocument = () => { this.props.removeDocument(this.props.document) }
+  removeDocument = () => { this.props.dispatch(removeDocument(this.props.document)) }
   formatDate = (date) => { return moment(date).format("YYYY-MM-DD HH:mm:ss") }
 
   removeButton = (canRemove) => {
@@ -69,4 +71,4 @@ class DocumentBlock extends Component {
   }
 }
 
-export default DocumentBlock
+export default connect(null)(DocumentBlock)
