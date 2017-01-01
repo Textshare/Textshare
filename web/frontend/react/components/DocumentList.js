@@ -1,31 +1,21 @@
 import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
-import * as DocumentsActions from "redux/actions/documents"
+import { addDocument, fetchDocuments, removeDocument } from "redux/actions/documents"
+import { setSorting } from "redux/actions/sort"
 import DocumentBlock from "components/DocumentBlock"
 import "./DocumentList.scss"
-import moment from "moment"
 import { browserHistory } from "react-router"
 
 class DocumentList extends Component {
   componentWillMount() {
-    this.props.fetchDocuments()
+    this.props.dispatch(fetchDocuments()).then((_data) => {
+      this.props.dispatch(setSorting(this.props.choosenSorting))
+    })
   }
 
   newDocument = (_event) => {
-    this.props.addDocument().then(function(data) { browserHistory.push("/docs/" + data.id) })
-  }
-
-  filterByTitleAndTags = (document) => {
-    if (!this.props.search_text) return true;
-
-    let textContains = (text1, text2) => {
-      return text1.toLowerCase().indexOf(text2.toLowerCase()) > -1
-    }
-    let tagNames = document.tags.map((tag) => { return tag.name });
-    return [document.title].concat(tagNames).some((text) => {
-      return textContains(text, this.props.search_text);
-    })
+    this.props.dispatch(addDocument()).then(function(data) { browserHistory.push("/docs/" + data.id) })
   }
 
   render() {
@@ -36,19 +26,12 @@ class DocumentList extends Component {
         </div>
         {
           this.props.documents
-            .filter((document) => this.filterByTitleAndTags(document))
-            .sort((document1, document2) => {
-              if (moment(document1.updated_at).isBefore(moment(document2.updated_at))) {
-                return 1;
-              } else {
-                return -1;
-              }
-            })
+            .filter((document) => !document.hide)
+            .sort((doc1, doc2) => doc1.order > doc2.order)
             .map((document) =>
             <DocumentBlock
               key={document.id}
               document={document}
-              removeDocument={this.props.removeDocument}
               canRemove={document.owner.id == this.props.current_user_id}
             ></DocumentBlock>
           )
@@ -60,10 +43,11 @@ class DocumentList extends Component {
 
 function mapStateToProps(state) {
   return {
+    choosenSorting: state.sort.sorting || { label: "Created desc.", type: "inserted_at", direction: -1 },
     documents: Object.keys(state.documents).map((key) => state.documents[key]),
     search_text: state.search.text,
     current_user_id: state.session.currentUser.id
   }
 }
 
-export default connect(mapStateToProps, DocumentsActions)(DocumentList)
+export default connect(mapStateToProps)(DocumentList)

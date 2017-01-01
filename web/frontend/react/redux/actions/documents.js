@@ -50,9 +50,10 @@ export function removeDocument(doc) { return (dispatch) => {
 } }
 
 export function fetchDocuments() { return (dispatch) => {
-  httpGet("/api/v1/documents")
+  return httpGet("/api/v1/documents")
     .then(function(data) {
       dispatch({ type: "RESPONSE_DOCUMENTS", data: data })
+      return data
     })
     .catch(function(error) {
       console.log(error)

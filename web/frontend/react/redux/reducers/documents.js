@@ -1,4 +1,5 @@
 import { combineReducers } from "redux"
+import moment from "moment"
 
 const initialState = {}
 
@@ -91,6 +92,60 @@ export default function documentsReducer(state = initialState, action) {
     case "SET_CUR_POS": {
         const newDocument = Object.assign({}, state[action.documentId], { line: action.line, ch: action.ch })
         return Object.assign({}, state, { [action.documentId]: newDocument })
+    }
+
+    case "SET_SORTING": {
+      const documents = Object.keys(state).map((key) => state[key])
+
+      const deep_value = (obj, path) => {
+        for (var i=0, path=path.split('.'), len=path.length; i<len; i++){
+          obj = obj[path[i]];
+        };
+        return obj;
+      }
+
+      const comparator = (doc1, doc2, type) => {
+        if (type === "inserted_at" || type === "updated_at") {
+          moment(doc1[type]).isBefore(moment(doc2[type]))
+        } else {
+          deep_value(doc1, action.sorting.type) > deep_value(doc1, action.sorting.type)
+        }
+      }
+
+      const newDocuments =
+        documents.sort((doc1, doc2) => {
+          return action.sorting.direction * (comparator(doc1, doc2, action.sorting.type) ? 1 : -1)
+        })
+        .map((document, index) => Object.assign({}, document, { order: index }))
+        .reduce((acc, doc) => {
+          return Object.assign(acc, { [doc.id]: doc })
+        }, {})
+
+      return Object.assign({}, state, newDocuments)
+    }
+
+    case "SET_SEARCH_TEXT": {
+      const documents = Object.keys(state).map((key) => state[key])
+
+      const filterByTitleAndTags = (document) => {
+        let textContains = (text1, text2) => {
+          return text1.toLowerCase().indexOf(text2.toLowerCase()) > -1
+        }
+        let tagNames = document.tags.map((tag) => { return tag.name });
+        return [document.title].concat(tagNames).some((text) => {
+          return textContains(text, action.text);
+        })
+      }
+
+      const newDocuments =
+        documents
+          .map((document) => Object.assign({}, document, { hide: !filterByTitleAndTags(document) }))
+          .reduce((acc, doc) => {
+            if (doc.content === null) doc.content = "";
+            return Object.assign(acc, { [doc.id]: doc })
+          }, {})
+
+      return Object.assign({}, state, newDocuments)
     }
 
     default:
