@@ -8,6 +8,7 @@ import TagList from "components/TagList"
 import AppendDocumentModal from "components/AppendDocumentModal"
 import CharacterLimitModal from "components/CharacterLimitModal"
 import Collaborators from "components/Collaborators"
+import { browserHistory } from "react-router"
 
 class DocumentView extends Component {
   createRevision = () => {
@@ -33,6 +34,10 @@ class DocumentView extends Component {
   }
 
 
+  openRevisionsPage = () => {
+    browserHistory.push("/docs/" + this.props.params.documentId + "/revisions");
+  }
+
   render() {
     return (
       <div>
@@ -52,9 +57,7 @@ class DocumentView extends Component {
         <TagList documentId={this.props.params.documentId}></TagList>
         <button onClick={this.openAppendDocumentModal}>Append document</button>
         <button onClick={this.openCharacterLimitModal}>Set character limit</button>
-        <button>
-          <Link to={"/docs/" + this.props.params.documentId + "/revisions"}>Revisions</Link>
-        </button>
+        <button onClick={this.openRevisionsPage}>Revisions</button>
         <button onClick={this.createRevision}>Create revision</button>
         <Editor documentId={this.props.params.documentId}></Editor>
       </div>
